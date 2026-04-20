@@ -1,0 +1,39 @@
+{
+  "name": "codex-obsidian",
+  "version": "0.1.0",
+  "description": "Codex plugin for local Obsidian workflows through the official desktop CLI.",
+  "author": {
+    "name": "Greg Asher"
+  },
+  "homepage": "https://github.com/greg-asher/codex-obsidian",
+  "repository": "https://github.com/greg-asher/codex-obsidian",
+  "license": "MIT",
+  "keywords": [
+    "obsidian",
+    "obsidian-cli",
+    "codex",
+    "agent-skill",
+    "knowledge-management"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Codex Obsidian",
+    "shortDescription": "Local Obsidian workflows through the official desktop CLI.",
+    "longDescription": "Install a focused Codex plugin for reading and updating local Obsidian vault content through documented official desktop CLI commands.",
+    "developerName": "Greg Asher",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Read a note from my Obsidian vault using the official desktop obsidian CLI.",
+      "List backlinks for a vault note in JSON using the official desktop obsidian CLI.",
+      "Append to today's daily note in my Obsidian vault with exact-path safety."
+    ],
+    "brandColor": "#5C43A8",
+    "websiteURL": "https://github.com/greg-asher/codex-obsidian",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/logo.svg"
+  }
+}

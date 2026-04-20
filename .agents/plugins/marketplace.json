@@ -1,0 +1,20 @@
+{
+  "name": "codex-obsidian-local",
+  "interface": {
+    "displayName": "Codex Obsidian Local"
+  },
+  "plugins": [
+    {
+      "name": "codex-obsidian",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
