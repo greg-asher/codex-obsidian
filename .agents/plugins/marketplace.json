@@ -1,7 +1,7 @@
 {
-  "name": "codex-obsidian-local",
+  "name": "lumicorp-marketplace",
   "interface": {
-    "displayName": "Codex Obsidian Local"
+    "displayName": "LumiCorp's Marketplace"
   },
   "plugins": [
     {

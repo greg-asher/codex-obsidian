@@ -35,7 +35,7 @@ The source of truth is the unpacked plugin content in this repository. There is 
 1. Clone this repository locally.
 2. Review `.agents/plugins/marketplace.json`. It exposes this repo as a local marketplace entry with `source.path` set to `./`.
 3. Restart Codex so it reloads the repo marketplace metadata.
-4. Open the plugin directory in Codex, choose the `Codex Obsidian Local` marketplace, and install `codex-obsidian`.
+4. Open the plugin directory in Codex, choose `LumiCorp's Marketplace`, and install `codex-obsidian`.
 5. Invoke `obsidian-official-cli` explicitly and run a small read-only task first to confirm the install and skill boundary.
 
 Codex installs local plugins from a cached copy. After you change the plugin, restart Codex and reinstall or refresh from the repo marketplace flow so the installed copy picks up the new files.
