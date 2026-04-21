@@ -2,7 +2,7 @@
 
 ## Role in this repository
 
-This skill is the primary shipped capability in the `codex-obsidian` plugin.
+This skill is one of the shipped capabilities in the `codex-obsidian` plugin and remains the core note-content workflow skill.
 
 ## Authoring guidance
 
