@@ -1,0 +1,6 @@
+interface:
+  display_name: "Obsidian CLI Sync and Publish"
+  short_description: "Operate Obsidian Sync and Publish safely through official desktop CLI commands."
+  default_prompt: "Use official Obsidian CLI Sync/Publish commands with explicit target scope and side-effect reporting. Run status checks first and apply conservative guardrails before mutating commands."
+policy:
+  allow_implicit_invocation: false

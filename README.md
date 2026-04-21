@@ -2,18 +2,39 @@
 
 `codex-obsidian` is a Codex plugin for local Obsidian workflows through the official desktop `obsidian` CLI.
 
-It currently ships one skill, `obsidian-official-cli`, which is intentionally narrow: it focuses on documented desktop CLI note and metadata operations, preserves exact-path mutation safety, and stays out of community tooling, plugin APIs, and non-desktop Obsidian surfaces.
+It currently ships six focused skills:
+
+- `obsidian-official-cli` for core note and metadata workflows.
+- `obsidian-cli-bases-and-bookmarks` for Bases discovery/query and bookmark workflows.
+- `obsidian-cli-runtime-admin` for plugin/theme/snippet and command/hotkey runtime administration.
+- `obsidian-cli-devtools` for runtime diagnostics and developer-command workflows.
+- `obsidian-cli-sync-and-publish` for Sync and Publish workflows with explicit side-effect guardrails.
+- `obsidian-cli-workspace-and-navigation` for vault/workspace/tab/navigation and utility workflows.
 
 ## What This Plugin Does
 
 - Reads and inspects local Obsidian vault content through the official desktop CLI.
-- Handles note, link, task, property, template, and history workflows that the documented CLI supports.
+- Handles note, link, task, property, template, history, Bases, Bookmarks, Sync, Publish, developer-command, and workspace/navigation workflows that the documented CLI supports.
+- Handles runtime administration for plugins, themes, snippets, and command/hotkey surfaces through documented CLI commands.
 - Uses minimal local filesystem support only when that is needed to safely support an official CLI workflow.
+
+## Skill Routing Quick Guide
+
+- Use `obsidian-official-cli` for note content and knowledge workflows.
+- Use `obsidian-cli-bases-and-bookmarks` for Bases and bookmark query/creation workflows.
+- Use `obsidian-cli-runtime-admin` for runtime configuration and command registry workflows.
+- Use `obsidian-cli-devtools` for runtime diagnostics, screenshots, and explicit eval/CDP workflows.
+- Use `obsidian-cli-sync-and-publish` for Sync/Publish state and remote-side-effect operations.
+- Use `obsidian-cli-workspace-and-navigation` for vault/workspace/tab/navigation operations and utility commands.
+
+See the detailed matrix and chaining recipes in:
+
+- `skills/obsidian-official-cli/references/obsidian-cli-skill-routing-matrix-2026-04-21.md`
 
 ## What This Plugin Does Not Do
 
 - It does not target community Obsidian CLIs or plugin-specific APIs.
-- It does not cover `obsidian://` launcher automation, Publish, or Headless Sync workflows.
+- It does not cover `obsidian://` launcher automation or Headless Sync workflows.
 - It does not bundle MCP servers or connector apps in this version.
 
 ## Repository Layout
@@ -25,7 +46,7 @@ This repository is the plugin root.
 ├── .codex-plugin/plugin.json
 ├── .agents/plugins/marketplace.json
 ├── assets/
-└── skills/obsidian-official-cli/
+└── skills/
 ```
 
 The source of truth is the unpacked plugin content in this repository. There is no separate packaged copy.
@@ -36,7 +57,7 @@ The source of truth is the unpacked plugin content in this repository. There is 
 2. Review `.agents/plugins/marketplace.json`. It exposes this repo as a local marketplace entry with `source.path` set to `./`.
 3. Restart Codex so it reloads the repo marketplace metadata.
 4. Open the plugin directory in Codex, choose `LumiCorp's Marketplace`, and install `codex-obsidian`.
-5. Invoke `obsidian-official-cli` explicitly and run a small read-only task first to confirm the install and skill boundary.
+5. Invoke one skill explicitly and run a small read-only task first to confirm install and routing boundaries.
 
 Codex installs local plugins from a cached copy. After you change the plugin, restart Codex and reinstall or refresh from the repo marketplace flow so the installed copy picks up the new files.
 

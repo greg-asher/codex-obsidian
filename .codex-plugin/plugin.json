@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Codex Obsidian",
     "shortDescription": "Local Obsidian workflows through the official desktop CLI.",
-    "longDescription": "Install a focused Codex plugin for reading and updating local Obsidian vault content through documented official desktop CLI commands.",
+    "longDescription": "Install focused Codex skills for local Obsidian note workflows, Bases/Bookmarks operations, runtime administration, devtools diagnostics, Sync/Publish operations, and workspace/navigation workflows through documented official desktop CLI commands.",
     "developerName": "Greg Asher",
     "category": "Productivity",
     "capabilities": [
@@ -28,8 +28,11 @@
     ],
     "defaultPrompt": [
       "Read a note from my Obsidian vault using the official desktop obsidian CLI.",
-      "List backlinks for a vault note in JSON using the official desktop obsidian CLI.",
-      "Append to today's daily note in my Obsidian vault with exact-path safety."
+      "Query a base view in JSON and list bookmarks using official Obsidian CLI commands.",
+      "List enabled community plugins and hotkeys in Obsidian through official CLI runtime-admin commands.",
+      "Use Obsidian CLI developer commands to inspect runtime errors and take a debug screenshot.",
+      "Check Obsidian Sync and Publish status, then summarize what would change before publishing.",
+      "Load a saved workspace, inspect tabs and recents, and open the target note in a new tab."
     ],
     "brandColor": "#5C43A8",
     "websiteURL": "https://github.com/greg-asher/codex-obsidian",
