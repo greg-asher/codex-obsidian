@@ -1,17 +1,17 @@
 ---
 name: obsidian-cli-sync-and-publish
-description: Use this skill when the user needs official desktop Obsidian CLI Sync or Publish workflows, including status checks, history inspection, restore operations, and publish add/remove flows. This skill is for remote-side-effect operations and must use explicit intent and conservative safety checks.
+description: Use this skill when the user needs official desktop Obsidian CLI Sync workflows and, when detected as available, Publish workflows. This skill is for remote-side-effect operations and must use explicit intent, capability probing, and conservative safety checks.
 ---
 
 # Obsidian CLI Sync and Publish
 
-Use this skill for Obsidian Sync and Obsidian Publish operations through official desktop `obsidian` CLI commands.
+Use this skill for Obsidian Sync operations and capability-gated Obsidian Publish operations through official desktop `obsidian` CLI commands.
 
 ## Routing contract
 
 Use this skill when:
 - the user asks for Sync state, Sync history, or Sync restore operations
-- the user asks for Publish status, publish add/remove, or publish site checks
+- the user asks for Publish status, publish add/remove, or publish site checks and those commands are detected as available
 - the task is a release/checkpoint flow that depends on Sync or Publish surfaces
 
 Do not use this skill when:
@@ -24,7 +24,8 @@ Do not use this skill when:
 Assume these must be true before relying on this skill:
 - `obsidian` command is installed and registered
 - Obsidian desktop app is available locally
-- Sync and/or Publish are configured in the target vault
+- Sync is configured in the target vault
+- Publish commands may be unavailable in some CLI builds and must be probed before use
 - in Codex Desktop on macOS, direct launches can crash; prefer sanitized wrapper
 
 ## Codex-safe launcher
@@ -40,20 +41,23 @@ Escalate the wrapped command only when required by sandbox boundaries.
 ## Core operating policy
 
 1. Use only official desktop Sync and Publish CLI commands.
-2. For mixed read/write flows, run status checks first (`sync:status`, `publish:status`).
-3. Treat mutating commands as high-impact operations.
-4. Do not run mutating commands on implicit active-file targets unless the user explicitly requested active-file behavior.
-5. For restore operations (`sync:restore`), require explicit `version=<n>` plus explicit `file=` or `path=` unless the user clearly specifies active-file restore.
-6. For publish operations, clearly state whether action targets one file, path, or all changed files.
-7. Summarize remote side effects before executing mutating operations.
-8. If Sync or Publish is not configured, report that blocker and stop.
-9. If the request is actually headless/server Sync, say this skill does not cover Headless Sync and stop.
+2. Probe publish command availability before using any `publish:*` command. Use a read-only check like `obsidian help publish:status`.
+3. If publish probe reports `No commands matching`, treat Publish as unsupported in this environment and refuse publish actions plainly.
+4. For mixed read/write flows, run status checks first (`sync:status`; and `publish:status` only when publish support is confirmed).
+5. Treat mutating commands as high-impact operations.
+6. Do not run mutating commands on implicit active-file targets unless the user explicitly requested active-file behavior.
+7. For restore operations (`sync:restore`), require explicit `version=<n>` plus explicit `file=` or `path=` unless the user clearly specifies active-file restore.
+8. For publish operations (when supported), clearly state whether action targets one file, path, or all changed files.
+9. Summarize remote side effects before executing mutating operations.
+10. If Sync is not configured, report that blocker and stop.
+11. If publish is requested but unavailable in this CLI build, report that blocker and stop.
+12. If the request is actually headless/server Sync, say this skill does not cover Headless Sync and stop.
 
 ## Risk levels
 
-- low: `sync:status`, `sync:history`, `sync:read`, `sync:deleted`, `publish:site`, `publish:list`, `publish:status`
-- medium: `sync`, `sync:open`, `publish:open`
-- high: `sync:restore`, `publish:add`, `publish:remove`
+- low: `sync:status`, `sync:history`, `sync:read`, `sync:deleted`; and `publish:site`, `publish:list`, `publish:status` only when supported
+- medium: `sync`, `sync:open`; and `publish:open` only when supported
+- high: `sync:restore`; and `publish:add`, `publish:remove` only when supported
 
 ## Response contract
 
@@ -78,12 +82,12 @@ Sync:
 - `sync:deleted`
 
 Publish:
-- `publish:site`
-- `publish:list`
-- `publish:status`
-- `publish:add`
-- `publish:remove`
-- `publish:open`
+- `publish:site` (only when supported)
+- `publish:list` (only when supported)
+- `publish:status` (only when supported)
+- `publish:add` (only when supported)
+- `publish:remove` (only when supported)
+- `publish:open` (only when supported)
 
 ## References
 

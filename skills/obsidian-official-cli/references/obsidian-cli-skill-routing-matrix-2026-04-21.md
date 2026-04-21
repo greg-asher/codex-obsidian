@@ -13,7 +13,7 @@ Use this matrix to pick the right skill and chain them safely.
 - `obsidian-cli-devtools`:
   - runtime diagnostics: errors, console, DOM/CSS, screenshots, `eval`, `dev:cdp`
 - `obsidian-cli-sync-and-publish`:
-  - Sync and Publish status/history/restore/add/remove flows
+  - Sync status/history/restore flows and capability-gated Publish flows
 - `obsidian-cli-workspace-and-navigation`:
   - vault/workspace/tab/navigation and utility workflows
 
@@ -23,7 +23,7 @@ Use this matrix to pick the right skill and chain them safely.
 - "Query Projects.base Roadmap in JSON and bookmark blocked items" -> `obsidian-cli-bases-and-bookmarks`
 - "Install Dataview and enable it" -> `obsidian-cli-runtime-admin`
 - "Show console errors from my plugin" -> `obsidian-cli-devtools`
-- "Check publish status then publish changed files" -> `obsidian-cli-sync-and-publish`
+- "Check sync status and, if publish commands are supported, publish changed files" -> `obsidian-cli-sync-and-publish`
 - "Load the Daily Review workspace, inspect recents, then open a note in a new tab" -> `obsidian-cli-workspace-and-navigation`
 
 ## Chaining patterns
@@ -38,9 +38,9 @@ Use this matrix to pick the right skill and chain them safely.
 ### Release chain
 
 1. `obsidian-official-cli`: `diff` and `history` on target notes
-2. `obsidian-cli-sync-and-publish`: `sync:status` and `publish:status`
-3. `obsidian-cli-sync-and-publish`: `publish:add path=...` or `publish:add changed`
-4. `obsidian-cli-sync-and-publish`: `publish:list` for verification
+2. `obsidian-cli-sync-and-publish`: `sync:status` plus publish capability probe (`help publish:status`)
+3. if publish is supported: run `publish:status` and `publish:add path=...` or `publish:add changed`
+4. if publish is supported: run `publish:list` for verification; otherwise stop with unsupported publish blocker
 
 ### Bases research chain
 
@@ -71,7 +71,7 @@ Use this matrix to pick the right skill and chain them safely.
 
 - Keep note-content edits in `obsidian-official-cli` with exact-path mutation rules.
 - Keep base and bookmark workflows in `obsidian-cli-bases-and-bookmarks`.
-- Keep remote-side-effect operations (Sync/Publish) in `obsidian-cli-sync-and-publish`.
+- Keep remote-side-effect Sync operations and capability-gated Publish operations in `obsidian-cli-sync-and-publish`.
 - Keep runtime diagnostics and code execution (`eval`, `dev:cdp`) in `obsidian-cli-devtools`.
 - Keep runtime admin and customization operations in `obsidian-cli-runtime-admin`.
 - Keep vault/workspace/tab/navigation and utility operations in `obsidian-cli-workspace-and-navigation`.

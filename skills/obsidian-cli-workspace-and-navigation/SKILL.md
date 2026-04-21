@@ -47,7 +47,7 @@ Escalate the wrapped command only when required by sandbox boundaries.
 2. Prefer read-only inspection first for mixed flows: `vault`, `vaults`, `workspace`, `workspaces`, `tabs`, `recents`, `wordcount`.
 3. Treat workspace layout mutations as high-impact operations (`workspace:save`, `workspace:load`, `workspace:delete`).
 4. For `tab:open` and `open`, require explicit target intent when both file and view options are plausible.
-5. Note that `vault:open` is TUI-only; if unavailable in current execution mode, report the limitation and stop.
+5. `vault:open` is not currently treated as part of this skill's owned command set in this plugin release.
 6. For `web url=...`, require explicit URL target and avoid silent URL construction.
 7. Summarize side effects before mutating workspace state.
 8. If a request is outside official workspace/navigation surface, say so and stop.
@@ -55,7 +55,7 @@ Escalate the wrapped command only when required by sandbox boundaries.
 ## Risk levels
 
 - low: `vault`, `vaults`, `workspace`, `workspaces`, `tabs`, `recents`, `random`, `random:read`, `wordcount`
-- medium: `open`, `tab:open`, `unique`, `web`, `vault:open`
+- medium: `open`, `tab:open`, `unique`, `web`
 - high: `workspace:save`, `workspace:load`, `workspace:delete`
 
 ## Response contract
@@ -74,7 +74,6 @@ Always return:
 Vault:
 - `vault`
 - `vaults`
-- `vault:open` (TUI only)
 
 Workspace and tabs:
 - `workspace`

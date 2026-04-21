@@ -18,5 +18,5 @@
 ## Operational limits
 
 - desktop Obsidian app must be available
-- `vault:open` is TUI-only and may not be available in one-shot command mode
+- `vault:open` is not currently covered by this skill in this plugin release
 - workspace load/delete can significantly change current app layout state

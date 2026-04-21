@@ -5,7 +5,7 @@ Goal: represent the full official Obsidian CLI surface in this plugin while keep
 Status update (implemented):
 - dedicated `obsidian-cli-workspace-and-navigation` was added
 - explicit invocation remains default across all shipped skills
-- Publish remains available only through the dedicated `obsidian-cli-sync-and-publish` skill with explicit guardrails
+- Publish remains available only through the dedicated `obsidian-cli-sync-and-publish` skill with explicit guardrails and capability probing
 
 ## Design constraints
 
@@ -165,10 +165,10 @@ Intent:
 
 Chain:
 1. `sync:status`
-2. `publish:status`
+2. publish capability probe, then `publish:status` if supported
 3. `diff`/`history` on changed files
-4. `publish:add changed`
-5. `publish:list` and optional `publish:open`
+4. `publish:add changed` if supported
+5. `publish:list` and optional `publish:open` if supported
 
 ## Pipeline E: Vault hygiene sweep
 
@@ -192,6 +192,6 @@ Chain:
 
 ## Resolved decisions
 
-- Publish is handled only by the dedicated `obsidian-cli-sync-and-publish` skill, not by core note workflows.
+- Publish is handled only by the dedicated `obsidian-cli-sync-and-publish` skill and only when publish commands are supported in the local CLI.
 - `eval` remains devtools-only with explicit risk framing.
 - `open`, `random`, and `web` live in `obsidian-cli-workspace-and-navigation`.

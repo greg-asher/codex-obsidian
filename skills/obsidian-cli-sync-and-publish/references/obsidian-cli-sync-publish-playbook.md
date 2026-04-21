@@ -10,6 +10,12 @@ script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchIn
 
 ```bash
 obsidian sync:status
+obsidian help publish:status
+```
+
+If publish support is detected, continue with publish status checks:
+
+```bash
 obsidian publish:status
 obsidian publish:list total
 ```
@@ -31,4 +37,5 @@ obsidian publish:remove path="Archive/OldPlan.md"
 obsidian publish:open path="Projects/Plan.md"
 ```
 
+Run publish commands only when the publish support probe succeeds.
 Prefer status + explicit scope before mutating publish or restore actions.

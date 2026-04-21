@@ -114,12 +114,7 @@ This inventory captures the official desktop `obsidian` CLI surface available in
 
 ### Publish
 
-- `publish:site`
-- `publish:list`
-- `publish:status`
-- `publish:add`
-- `publish:remove`
-- `publish:open`
+- `publish:*` commands were not detected in this local CLI build during validation and must be treated as capability-gated.
 
 ### Random notes
 
@@ -178,7 +173,7 @@ This inventory captures the official desktop `obsidian` CLI surface available in
 
 - `vault`
 - `vaults`
-- `vault:open` (TUI only)
+- `vault:open` was not detected in this local CLI build during validation
 
 ### Web viewer
 
@@ -220,7 +215,7 @@ Current plugin-level catalog coverage:
 - `obsidian-cli-bases-and-bookmarks`: bases and bookmarks
 - `obsidian-cli-runtime-admin`: plugins/themes/snippets/command registry
 - `obsidian-cli-devtools`: developer diagnostics and runtime inspection
-- `obsidian-cli-sync-and-publish`: sync/publish operations
+- `obsidian-cli-sync-and-publish`: sync operations and capability-gated publish workflows
 - `obsidian-cli-workspace-and-navigation`: vault/workspace/tab/navigation utilities
 
 The core `obsidian-official-cli` skill remains intentionally narrow and delegates advanced command families to sibling skills.
@@ -228,6 +223,6 @@ The core `obsidian-official-cli` skill remains intentionally narrow and delegate
 ## Risk and safety notes for advanced surfaces
 
 - Admin-style surfaces (plugins/themes/snippets/restricted mode) can significantly alter vault runtime behavior.
-- Publish and Sync surfaces require explicit intent due to remote side effects.
+- Sync and capability-gated Publish surfaces require explicit intent due to remote side effects.
 - Developer commands can inspect DOM, run JS, and capture screenshots; these need stricter guardrails than plain note edits.
 - Existing exact-path mutation safety rules remain valid and should be preserved.

@@ -58,6 +58,7 @@ Use a disposable vault first. Check:
 - write behavior when the vault is outside the current workspace
 - write behavior when the parent folder does not already exist
 - broader safe vault structure work that supports a CLI note operation
+- command-family capability probes for optional or drift-prone commands (for example `obsidian help publish:status`) before claiming support in docs or skill contracts
 
 During manual checks, verify:
 

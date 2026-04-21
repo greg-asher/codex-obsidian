@@ -8,13 +8,13 @@ It currently ships six focused skills:
 - `obsidian-cli-bases-and-bookmarks` for Bases discovery/query and bookmark workflows.
 - `obsidian-cli-runtime-admin` for plugin/theme/snippet and command/hotkey runtime administration.
 - `obsidian-cli-devtools` for runtime diagnostics and developer-command workflows.
-- `obsidian-cli-sync-and-publish` for Sync and Publish workflows with explicit side-effect guardrails.
+- `obsidian-cli-sync-and-publish` for Sync workflows and capability-gated Publish workflows with explicit side-effect guardrails.
 - `obsidian-cli-workspace-and-navigation` for vault/workspace/tab/navigation and utility workflows.
 
 ## What This Plugin Does
 
 - Reads and inspects local Obsidian vault content through the official desktop CLI.
-- Handles note, link, task, property, template, history, Bases, Bookmarks, Sync, Publish, developer-command, and workspace/navigation workflows that the documented CLI supports.
+- Handles note, link, task, property, template, history, Bases, Bookmarks, Sync, developer-command, and workspace/navigation workflows that the documented CLI supports, with Publish handled only when detected as available in the local CLI.
 - Handles runtime administration for plugins, themes, snippets, and command/hotkey surfaces through documented CLI commands.
 - Uses minimal local filesystem support only when that is needed to safely support an official CLI workflow.
 
@@ -24,7 +24,7 @@ It currently ships six focused skills:
 - Use `obsidian-cli-bases-and-bookmarks` for Bases and bookmark query/creation workflows.
 - Use `obsidian-cli-runtime-admin` for runtime configuration and command registry workflows.
 - Use `obsidian-cli-devtools` for runtime diagnostics, screenshots, and explicit eval/CDP workflows.
-- Use `obsidian-cli-sync-and-publish` for Sync/Publish state and remote-side-effect operations.
+- Use `obsidian-cli-sync-and-publish` for Sync state and remote-side-effect operations, and for Publish only when publish commands are available.
 - Use `obsidian-cli-workspace-and-navigation` for vault/workspace/tab/navigation operations and utility commands.
 
 See the detailed matrix and chaining recipes in:
