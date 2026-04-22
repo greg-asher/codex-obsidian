@@ -19,6 +19,7 @@ Do not use this skill when:
 - the request is primarily note CRUD, tasks, templates, link cleanup, or history/diff workflows
 - the request is plugin/theme/snippet runtime administration
 - the request is Sync/Publish operations
+- the request is explicitly a named one-command workflow ID (route to `obsidian-cli-workflows`)
 - the request is runtime diagnostics/eval/CDP workflows
 
 ## Preconditions

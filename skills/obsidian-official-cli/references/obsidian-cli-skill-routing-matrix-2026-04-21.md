@@ -16,6 +16,9 @@ Use this matrix to pick the right skill and chain them safely.
   - Sync status/history/restore flows and capability-gated Publish flows
 - `obsidian-cli-workspace-and-navigation`:
   - vault/workspace/tab/navigation and utility workflows
+- `obsidian-cli-workflows`:
+  - one-command orchestration by named workflow ID with preview/apply controls
+  - owns workflow IDs only; delegates direct command execution to the six domain skills
 
 ## Routing examples
 
@@ -25,6 +28,8 @@ Use this matrix to pick the right skill and chain them safely.
 - "Show console errors from my plugin" -> `obsidian-cli-devtools`
 - "Check sync status and, if publish commands are supported, publish changed files" -> `obsidian-cli-sync-and-publish`
 - "Load the Daily Review workspace, inspect recents, then open a note in a new tab" -> `obsidian-cli-workspace-and-navigation`
+- "Run workflow_id=tasks.rollup mode=preview output=json" -> `obsidian-cli-workflows`
+- "Run workflow_id=workspace.focus_mode mode=apply workspace_name=Focus" -> `obsidian-cli-workflows`
 
 ## Chaining patterns
 
@@ -61,11 +66,30 @@ Use this matrix to pick the right skill and chain them safely.
 2. `obsidian-cli-workspace-and-navigation`: `open path=... newtab` for intended work context
 3. `obsidian-official-cli`: run note-content workflow (`read`, `append`, `tasks`, `properties`)
 
+### Workflow chain: workspace context setup -> note workflow handoff
+
+1. `obsidian-cli-workflows`: `workflow_id=workspace.focus_mode mode=preview|apply`
+2. `obsidian-cli-workspace-and-navigation`: `workspace:load`, `tabs`, `open`, `recents`
+3. `obsidian-official-cli`: follow-on note workflow (`read`, `append`, `tasks`, `properties`)
+
 ### Navigation sampling -> targeted core note operations
 
 1. `obsidian-cli-workspace-and-navigation`: `random:read folder=...` or inspect `recents`
 2. `obsidian-cli-workspace-and-navigation`: resolve and open selected note target
 3. `obsidian-official-cli`: apply targeted edits/analysis with exact `path=` safety
+
+### Workflow chain: navigation sampling -> targeted core note operations
+
+1. `obsidian-cli-workflows`: `workflow_id=recents.triage mode=preview|apply`
+2. `obsidian-cli-workspace-and-navigation`: `recents`, `wordcount`, optional `open`
+3. `obsidian-official-cli`: targeted `tasks` or note operations on selected paths
+
+### Workflow chain: publish release gate
+
+1. `obsidian-cli-workflows`: `workflow_id=publish.release_gate mode=preview|apply`
+2. `obsidian-cli-sync-and-publish`: `help publish:status` capability probe (required first)
+3. if supported and approved: `publish:status`, `publish:list`, `publish:add|publish:remove`
+4. if unsupported: stop with blocker and do not execute `publish:*`
 
 ## Guardrail summary
 
@@ -75,3 +99,4 @@ Use this matrix to pick the right skill and chain them safely.
 - Keep runtime diagnostics and code execution (`eval`, `dev:cdp`) in `obsidian-cli-devtools`.
 - Keep runtime admin and customization operations in `obsidian-cli-runtime-admin`.
 - Keep vault/workspace/tab/navigation and utility operations in `obsidian-cli-workspace-and-navigation`.
+- Keep one-command workflow IDs and preview/apply orchestration in `obsidian-cli-workflows`.

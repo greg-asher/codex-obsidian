@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Codex Obsidian",
     "shortDescription": "Local Obsidian workflows through the official desktop CLI.",
-    "longDescription": "Install focused Codex skills for local Obsidian note workflows, Bases/Bookmarks operations, runtime administration, devtools diagnostics, Sync operations, capability-gated Publish operations, and workspace/navigation workflows through documented official desktop CLI commands.",
+    "longDescription": "Install focused Codex skills for local Obsidian note workflows, Bases/Bookmarks operations, runtime administration, devtools diagnostics, Sync operations, capability-gated Publish operations, workspace/navigation workflows, and named one-command orchestration workflows through documented official desktop CLI commands.",
     "developerName": "Greg Asher",
     "category": "Productivity",
     "capabilities": [
@@ -32,7 +32,9 @@
       "List enabled community plugins and hotkeys in Obsidian through official CLI runtime-admin commands.",
       "Use Obsidian CLI developer commands to inspect runtime errors and take a debug screenshot.",
       "Check Obsidian Sync status and determine whether publish commands are available before any publish action.",
-      "Load a saved workspace, inspect tabs and recents, and open the target note in a new tab."
+      "Load a saved workspace, inspect tabs and recents, and open the target note in a new tab.",
+      "Run workflow_id=tasks.rollup mode=preview output=json using the obsidian-cli-workflows skill.",
+      "Run workflow_id=daily.bootstrap mode=preview and only apply after explicit confirmation."
     ],
     "brandColor": "#5C43A8",
     "websiteURL": "https://github.com/greg-asher/codex-obsidian",
