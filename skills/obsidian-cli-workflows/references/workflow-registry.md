@@ -19,8 +19,8 @@ Global apply policy:
 ### 1) `daily.bootstrap`
 - `internal_id`: `wf_daily_bootstrap`
 - `intent`: initialize the daily note with structured bootstrap context
-- `required_inputs`: `date=today|YYYY-MM-DD`
-- `optional_inputs`: `template`, `carry_over_from`, `include_metrics`
+- `required_inputs`: none
+- `optional_inputs`: `date` (defaults to `today`), `template`, `carry_over_from`, `include_metrics`
 - `chained_steps`:
   1. `obsidian-official-cli`: `daily:path`, `daily:read`
   2. `obsidian-official-cli`: `tasks daily format=json`
