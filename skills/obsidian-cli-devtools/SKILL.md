@@ -18,6 +18,7 @@ Use this skill when:
 Do not use this skill when:
 - the request is primarily note CRUD, tasks, metadata, links, templates, or history
 - the request is primarily Sync or Publish operations
+- the request is explicitly a named one-command workflow ID (route to `obsidian-cli-workflows`)
 - the request requires community wrappers, plugin APIs, or `obsidian://` launcher flows
 
 ## Preconditions

@@ -17,6 +17,7 @@ Use this skill when:
 Do not use this skill when:
 - the request is regular note CRUD, task/property updates, or graph cleanup
 - the request is Obsidian Headless automation without desktop app
+- the request is explicitly a named one-command workflow ID (route to `obsidian-cli-workflows`)
 - the request is community tooling or non-official publish/sync surfaces
 
 ## Preconditions

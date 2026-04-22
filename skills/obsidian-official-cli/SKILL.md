@@ -18,6 +18,7 @@ Do not use this skill when:
 - the request is primarily arbitrary markdown editing rather than an Obsidian workflow
 - the request is about Headless Sync, Publish, or any non-desktop official surface
 - the request is about runtime admin, devtools diagnostics, or workspace/navigation administration
+- the request is explicitly a named one-command workflow ID (route to `obsidian-cli-workflows`)
 - the request is about `obsidian://` launchers, plugin APIs, or community tooling
 
 ## Preconditions

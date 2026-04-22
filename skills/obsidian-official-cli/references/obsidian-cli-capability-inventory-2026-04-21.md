@@ -217,6 +217,7 @@ Current plugin-level catalog coverage:
 - `obsidian-cli-devtools`: developer diagnostics and runtime inspection
 - `obsidian-cli-sync-and-publish`: sync operations and capability-gated publish workflows
 - `obsidian-cli-workspace-and-navigation`: vault/workspace/tab/navigation utilities
+- `obsidian-cli-workflows`: named one-command orchestration layer over the six domain skills
 
 The core `obsidian-official-cli` skill remains intentionally narrow and delegates advanced command families to sibling skills.
 

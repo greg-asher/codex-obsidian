@@ -19,6 +19,7 @@ Use this skill when:
 Do not use this skill when:
 - the request is primarily note edits, links, tasks, properties, templates, or history
 - the request is primarily Sync/Publish operations
+- the request is explicitly a named one-command workflow ID (route to `obsidian-cli-workflows`)
 - the request is runtime debugging, DOM/CSS inspection, or screenshot/eval diagnostics
 
 ## Preconditions
