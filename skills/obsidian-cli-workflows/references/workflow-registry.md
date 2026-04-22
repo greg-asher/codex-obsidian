@@ -47,12 +47,13 @@ Global apply policy:
 - `internal_id`: `wf_inbox_capture`
 - `intent`: capture an idea into inbox conventions with metadata
 - `required_inputs`: `title` or `content`
-- `optional_inputs`: `folder`, `tags`, `properties`, `open_new_tab`
+- `optional_inputs`: `folder`, `tags`, `properties`, `open_new_tab`, `create_strategy=create|unique`
 - `chained_steps`:
-  1. `obsidian-official-cli`: `create` (or `unique` via workspace skill when requested)
-  2. `obsidian-official-cli`: `property:set`, `append`
-  3. `obsidian-official-cli`: `tags` or `properties` verification
-  4. `obsidian-cli-workspace-and-navigation`: `open` (optional)
+  1. `obsidian-official-cli`: `create` (default path-based note creation)
+  2. `obsidian-cli-workspace-and-navigation`: `unique` (optional alternative when `create_strategy=unique`)
+  3. `obsidian-official-cli`: `property:set`, `append`
+  4. `obsidian-official-cli`: `tags` or `properties` verification
+  5. `obsidian-cli-workspace-and-navigation`: `open` (optional)
 - `default_output`: inline capture result with created path and applied metadata
 - `risk_level`: medium
 - `apply_guardrails`: require explicit folder/title target and metadata preview before create

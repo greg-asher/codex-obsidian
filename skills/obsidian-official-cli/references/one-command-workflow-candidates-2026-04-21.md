@@ -1,11 +1,11 @@
-# One-Command Workflow Candidate Catalog (2026-04-21)
+# One-Command Workflow Catalog (2026-04-21)
 
-This catalog lists user-facing "one-command" workflow candidates built from the current `codex-obsidian` skill surface.
-These candidates are implemented as named workflow IDs in `obsidian-cli-workflows/references/workflow-registry.md`.
+This catalog lists user-facing one-command workflows built from the `codex-obsidian` skill surface.
+These workflows are implemented as named workflow IDs in `obsidian-cli-workflows/references/workflow-registry.md`.
 
-Each candidate is intended to be invoked as one user intent, even though it chains multiple official CLI actions under the hood.
+Each workflow is intended to be invoked as one user intent, even though it chains multiple official CLI actions under the hood.
 
-## Candidate Fields
+## Workflow Fields
 
 - `id`: stable workflow identifier
 - `one_command`: suggested command-style name
@@ -15,7 +15,7 @@ Each candidate is intended to be invoked as one user intent, even though it chai
 - `risk`: `low` | `medium` | `high`
 - `notes`: key constraints or guardrails
 
-## Candidate Catalog
+## Workflow Catalog
 
 ## Daily and Personal Ops
 
@@ -38,7 +38,7 @@ Each candidate is intended to be invoked as one user intent, even though it chai
 3. `id`: `wf_inbox_capture`
 - `one_command`: `inbox.capture`
 - `user_intent`: "Capture this idea in my inbox and tag it correctly."
-- `chain`: `unique` or `create` -> `property:set` -> `tags` check -> optional `open newtab`
+- `chain`: `create` (default) or `unique` when `create_strategy=unique` -> `property:set` -> `tags` check -> optional `open newtab`
 - `skills`: `obsidian-official-cli`, `obsidian-cli-workspace-and-navigation`
 - `risk`: `medium`
 - `notes`: requires folder/property defaults.
@@ -173,64 +173,8 @@ Each candidate is intended to be invoked as one user intent, even though it chai
 - `risk`: `high`
 - `notes`: blocked in current local CLI build where `publish:*` is unavailable.
 
-## Priority-Selection Input Set (for next step)
+## Implementation status
 
-Use this shortlist when choosing first-priority one-command commands:
-
-- `daily.bootstrap`
-- `project.kickoff`
-- `tasks.rollup`
-- `research.pack`
-- `base.snapshot`
-- `workspace.focus_mode`
-- `runtime.debug_snapshot`
-- `sync.health_check`
-
-These were selected for high user value with current verified command support and clear guardrails.
-
-## Proposed Launch Priority (P0/P1/P2)
-
-## P0 (launch first)
-
-- `tasks.rollup`
-  - high recurring utility, low mutation risk, clear output surface
-- `daily.bootstrap`
-  - daily habit workflow with immediate repeat usage
-- `research.pack`
-  - strong leverage for knowledge retrieval and synthesis
-- `sync.health_check`
-  - low-risk operational safety check with high trust value
-
-## P1 (launch second)
-
-- `project.kickoff`
-  - strong project onboarding value but requires template/default conventions
-- `base.snapshot`
-  - high value for structured reporting users; lower universal usage
-- `recents.triage`
-  - useful recovery flow after context switching, mostly read-first
-
-## P2 (launch after core adoption)
-
-- `runtime.debug_snapshot`
-  - high value for advanced users; narrower audience
-- `workspace.focus_mode`
-  - useful but stateful/high-impact layout mutation
-- `base.intake_create`
-  - high-risk base mutation flow requiring stricter guardrails
-- `tasks.close_and_log`
-  - useful dual-write flow but not as universal as rollup/bootstrap
-- `bookmark.curate`
-  - helpful curation flow, generally lower urgency
-- `graph.repair_plan`
-  - planning-heavy cleanup workflow; lower day-one demand
-- `graph.orphan_reduction`
-  - medium-term vault quality workflow
-- `daily.review`
-  - valuable, but often secondary to bootstrap/rollup in early rollout
-- `project.status_digest`
-  - useful for teams, but less universal than P0 commands
-- `inbox.capture`
-  - strong utility but overlaps with existing lightweight create flows
-- `publish.release_gate`
-  - currently capability-gated and blocked in local CLI where `publish:*` is unavailable
+- All 18 workflows in this catalog are implemented in `obsidian-cli-workflows/references/workflow-registry.md`.
+- The workflow registry is the canonical execution contract for command IDs, controls, risk, and apply guardrails.
+- `publish.release_gate` remains capability-gated and can return an explicit blocker when local `publish:*` commands are unavailable.

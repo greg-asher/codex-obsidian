@@ -48,6 +48,21 @@
 4. `publish.release_gate` always probes `help publish:status` before `publish:*` actions.
 5. Unsupported publish capability path returns blocker and no `publish:*` execution.
 
+## Representative apply matrix
+
+1. Low-risk checks:
+   - `workflow_id=tasks.rollup mode=apply`
+   - `workflow_id=sync.health_check mode=apply`
+   - confirm no unintended mutation side effects are reported or executed
+2. Medium-risk checks:
+   - `workflow_id=daily.bootstrap mode=apply`
+   - `workflow_id=runtime.debug_snapshot mode=apply`
+   - confirm explicit apply confirmation + mutation summaries before execution
+3. High-risk checks:
+   - `workflow_id=workspace.focus_mode mode=apply`
+   - `workflow_id=base.intake_create mode=apply`
+   - confirm explicit apply confirmation, strict target matching, and fail-closed behavior on ambiguity
+
 ## Cross-skill boundary checks
 
 1. Workflow skill remains orchestration-only.

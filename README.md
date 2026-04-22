@@ -40,7 +40,8 @@ Use explicit workflow command IDs through `obsidian-cli-workflows`:
 
 - `workflow_id=tasks.rollup mode=preview output=json`
 - `workflow_id=daily.bootstrap mode=preview vault=Work`
-- `workflow_id=workspace.focus_mode mode=apply`
+- `workflow_id=workspace.focus_mode mode=preview`
+- `workflow_id=workspace.focus_mode mode=apply` (run only after preview + explicit confirmation)
 
 ## What This Plugin Does Not Do
 
