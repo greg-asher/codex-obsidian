@@ -23,9 +23,10 @@ Use this checklist when refining the plugin in this repository.
 9. Confirm `SKILL.md` tells Codex to request escalated execution when the target vault is outside writable roots.
 10. Confirm `SKILL.md` documents the Codex Desktop macOS launch wrapper and explains why direct `obsidian` child launches can crash.
 11. Confirm `SKILL.md` separates wrapped command form from escalation policy and tells Codex to escalate the wrapped command when needed.
-12. Confirm the playbook documents missing-parent-folder behavior as a local support step rather than a hard stop.
-13. Confirm `agents/openai.yaml` keeps implicit invocation disabled unless deliberately changed.
-14. Confirm `assets/eval-prompts.csv` still covers explicit positives, implicit probes, safety cases, and out-of-scope cases.
+12. Confirm `CODEX_OBSIDIAN_ZSH_PATH` overrides the launcher shell while the unset case still resolves to `/usr/local/bin/zsh`.
+13. Confirm the playbook documents missing-parent-folder behavior as a local support step rather than a hard stop.
+14. Confirm `agents/openai.yaml` keeps implicit invocation disabled unless deliberately changed.
+15. Confirm `assets/eval-prompts.csv` still covers explicit positives, implicit probes, safety cases, and out-of-scope cases.
 
 ## Prompt checks
 
@@ -66,6 +67,7 @@ During manual checks, verify:
 - daily-note mutations use the documented `daily:*` commands rather than implicit active-file writes
 - a read-only probe happens before the first mutation in a session
 - from Codex Desktop on macOS, the probe works with the sanitized `script + zsh -ilc` wrapper
+- the wrapper uses `/usr/local/bin/zsh` when `CODEX_OBSIDIAN_ZSH_PATH` is unset and the configured absolute path when it is set
 - a direct unwrapped launch is not required if the wrapped launch is the stable path in Codex
 - when escalation is needed, the wrapped command is what gets escalated
 - external vault mutations try the wrapped CLI path before escalation
