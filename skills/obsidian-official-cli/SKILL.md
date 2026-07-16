@@ -36,8 +36,10 @@ Assume these must be true before relying on this skill:
 When this skill is used from Codex Desktop on macOS, do **not** invoke `obsidian` directly first. Prefer the Codex-safe wrapper form below:
 
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian ...'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian ...'
 ```
+
+Set `CODEX_OBSIDIAN_ZSH_PATH` when the login shell is installed somewhere other than `/usr/local/bin/zsh`. The default remains `/usr/local/bin/zsh` for backward compatibility. The override must be an absolute path to a Zsh-compatible executable.
 
 Why:
 - direct launches from the Codex app environment can crash before CLI handling begins
@@ -59,10 +61,9 @@ Enhanced wrapped execution form:
 
 ```text
 functions.exec_command(
-  cmd="script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault=<vault> <command>'",
+  cmd="script -q /dev/null \"${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}\" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault=<vault> <command>'",
   sandbox_permissions="require_escalated",
-  justification="<short user-facing reason>",
-  prefix_rule=["script","-q","/dev/null","/usr/local/bin/zsh","-ilc"]
+  justification="<short user-facing reason>"
 )
 ```
 

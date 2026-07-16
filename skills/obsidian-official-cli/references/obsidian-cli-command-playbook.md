@@ -8,14 +8,15 @@ Check that the CLI is visible:
 
 ```bash
 command -v obsidian
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian version'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian version'
 ```
 
 Remember:
 - `vault=<name>` or `vault=<id>` must come before the command.
 - `file=<name>` is for loose read-only note resolution only.
 - `path=<path>` is exact vault-relative targeting and should be preferred once resolved.
-- In Codex Desktop on macOS, prefer the sanitized `script -q /dev/null /usr/local/bin/zsh -ilc 'unset ...; export TERM=xterm-256color; obsidian ...'` wrapper instead of direct `obsidian ...` launches.
+- `CODEX_OBSIDIAN_ZSH_PATH` can override the default `/usr/local/bin/zsh` launcher path and must point to an absolute Zsh-compatible executable.
+- In Codex Desktop on macOS, prefer the sanitized `script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset ...; export TERM=xterm-256color; obsidian ...'` wrapper instead of direct `obsidian ...` launches.
 - The wrapper is the command form. Escalation is a separate decision.
 - Local filesystem support is acceptable when it helps the official CLI complete a safe vault workflow.
 
@@ -38,8 +39,8 @@ Use this sequence especially when the vault lives outside the current workspace.
 When running from Codex Desktop on macOS, use the raw wrapper form directly:
 
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian version'
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" read path="Projects/Kestrel.md"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian version'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" read path="Projects/Kestrel.md"'
 ```
 
 When the wrapped command needs higher privilege in Codex, escalate this exact wrapped form rather than switching back to raw `obsidian ...`.
@@ -48,10 +49,9 @@ Example enhanced execution shape:
 
 ```text
 functions.exec_command(
-  cmd="script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault=\"My Vault\" append path=\"Projects/Kestrel.md\" content=\"\\n- [ ] Review\"'",
+  cmd="script -q /dev/null \"${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}\" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault=\"My Vault\" append path=\"Projects/Kestrel.md\" content=\"\\n- [ ] Review\"'",
   sandbox_permissions="require_escalated",
-  justification="Do you want to run the official Obsidian CLI to update this note in the external vault?",
-  prefix_rule=["script","-q","/dev/null","/usr/local/bin/zsh","-ilc"]
+  justification="Do you want to run the official Obsidian CLI to update this note in the external vault?"
 )
 ```
 
@@ -59,39 +59,39 @@ functions.exec_command(
 
 ### Read the active file
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian read'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian read'
 ```
 
 ### Read a named file
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" read file=Recipe'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" read file=Recipe'
 ```
 
 ### Read an exact path
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" read path="Projects/Kestrel.md"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" read path="Projects/Kestrel.md"'
 ```
 
 ### Search the vault
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" search query="meeting notes"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" search query="meeting notes"'
 ```
 
 ### Search with line context
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" search:context query="agent loop"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" search:context query="agent loop"'
 ```
 
 ## Create and edit
 
 ### Create a note
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" create name="Project Brief"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" create name="Project Brief"'
 ```
 
 ### Create a note with content
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" create path="Projects/Brief.md" content="# Brief\n\nInitial notes"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" create path="Projects/Brief.md" content="# Brief\n\nInitial notes"'
 ```
 
 Important:
@@ -106,12 +106,12 @@ obsidian vault="My Vault" create name="Trip to Paris" template=Travel
 
 ### Append content
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" append path="Projects/Brief.md" content="\n- [ ] Review outline"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" append path="Projects/Brief.md" content="\n- [ ] Review outline"'
 ```
 
 ### Prepend content after frontmatter
 ```bash
-script -q /dev/null /usr/local/bin/zsh -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" prepend path="Projects/Brief.md" content="Summary line\n"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" prepend path="Projects/Brief.md" content="Summary line\n"'
 ```
 
 ### Rename a note
