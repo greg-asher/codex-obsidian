@@ -57,6 +57,7 @@ This repository is the plugin root.
 .
 ├── .codex-plugin/plugin.json
 ├── .agents/plugins/marketplace.json
+├── AGENTS.md
 ├── assets/
 └── skills/
 ```
