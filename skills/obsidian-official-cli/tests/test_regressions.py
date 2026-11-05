@@ -117,18 +117,22 @@ class ProtocolRegressionTests(unittest.TestCase):
         output = io.StringIO()
         process = Mock()
         process.communicate.side_effect = subprocess.TimeoutExpired('stub', 30, output=b'partial')
+        def launch(*args, **kwargs):
+            kwargs['stdout'].write(b'partial')
+            return process
         with patch('cli.sys.stdin', io.StringIO('{"argv":["append"]}')), \
                 patch('cli.command', return_value=['stub']), \
-                patch('cli.subprocess.Popen', return_value=process), contextlib.redirect_stdout(output):
+                patch('cli.subprocess.Popen', side_effect=launch), contextlib.redirect_stdout(output):
             self.assertEqual(cli.main(), 2)
         report = json.loads(output.getvalue())
         self.assertEqual(report['status'], 'uncertain')
         self.assertEqual(report['stdout'], 'partial')
         process.communicate.assert_called_once_with(timeout=30)
         process.kill.assert_called_once_with()
-        process.wait.assert_called_once_with()
-        process.stdout.close.assert_called_once_with()
-        process.stderr.close.assert_called_once_with()
+        process.wait.assert_called_once_with(timeout=cli.CLEANUP_TIMEOUT)
+        # No pipe streams/readers are created or synchronously closed.
+        process.stdout.close.assert_not_called()
+        process.stderr.close.assert_not_called()
 
 
 class WindowsRegressionTests(unittest.TestCase):

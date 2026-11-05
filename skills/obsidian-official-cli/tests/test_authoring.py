@@ -149,7 +149,15 @@ class LauncherTests(unittest.TestCase):
             result = effect()
             process.communicate.return_value = (result.stdout, result.stderr)
             process.returncode = result.returncode
-        with patch('cli.sys.stdin', io.StringIO(json.dumps(request))), contextlib.redirect_stdout(output), patch('cli.subprocess.Popen', return_value=process), patch('cli.command', return_value=['obsidian', 'version']):
+        def launch(*args, **kwargs):
+            if isinstance(effect, Exception):
+                stdout, stderr = effect.stdout or b'', effect.stderr or b''
+            else:
+                stdout, stderr = result.stdout, result.stderr
+            kwargs['stdout'].write(stdout)
+            kwargs['stderr'].write(stderr)
+            return process
+        with patch('cli.sys.stdin', io.StringIO(json.dumps(request))), contextlib.redirect_stdout(output), patch('cli.subprocess.Popen', side_effect=launch), patch('cli.command', return_value=['obsidian', 'version']):
             code = cli.main()
         return code, json.loads(output.getvalue())
 
