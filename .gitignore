@@ -11,3 +11,7 @@
 
 # Plugin verification artifacts
 assets/screenshot-install.*
+
+# Python helper bytecode
+__pycache__/
+*.pyc
