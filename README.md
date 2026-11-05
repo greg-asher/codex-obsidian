@@ -63,6 +63,16 @@ This repository is the plugin root.
 
 The source of truth is the unpacked plugin content in this repository. There is no separate packaged copy.
 
+## macOS Zsh Path Override
+
+The Codex Desktop launcher uses `/usr/local/bin/zsh` by default for backward compatibility. If Zsh is installed elsewhere, set `CODEX_OBSIDIAN_ZSH_PATH` to an absolute path before starting Codex. For example:
+
+```bash
+export CODEX_OBSIDIAN_ZSH_PATH=/bin/zsh
+```
+
+The launcher quotes the resolved path and continues to use the existing sanitized `script + zsh -ilc` execution form.
+
 ## Local Install And Test Flow
 
 1. Clone this repository locally.
