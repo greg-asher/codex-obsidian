@@ -107,7 +107,7 @@ Fixtures: `tests/fixtures/Atlas.md` models a project with properties, risks/miti
 
 ### Completed independent checks
 
-- 19 deterministic helper/fixture tests passed, including actual shell argv recording; all 19 also passed from a copied skill package in a path containing spaces, launched from an unrelated CWD.
+- Initial implementation: 19 deterministic helper/fixture tests passed, including actual shell argv recording; all 19 also passed from a copied skill package in a path containing spaces, launched from an unrelated CWD. The review repair below extends this suite.
 - Plugin/marketplace JSON and asset paths, all seven skill frontmatter and agent YAML files, explicit invocation policies, eval CSV shape/unique IDs, local Markdown links, and all 18 retained workflow IDs checked successfully. Six pre-existing unquoted-comma notes fields were repaired without changing evaluation semantics.
 - Skill-creator `quick_validate.py` passed for the core skill (its PyYAML tooling dependency was supplied in an isolated temporary uv environment; bundled helpers remain standard-library only). Whitespace/diff checks passed.
 - New launcher executed a real sanitized `version` probe with `/bin/zsh` and correctly reported only `process-completed` plus raw disabled-CLI diagnostics, rather than claiming verified capability/success.
@@ -123,3 +123,14 @@ With CLI enabled/registered and a disposable vault explicitly selected:
 5. Refresh/reinstall the cached plugin via the established marketplace flow, explicitly invoke the core skill, and verify the bundled helper resolves relative to that installed skill from an unrelated CWD. Static copied-package tests cover path portability only, not Codex UI installation or routing.
 
 Never label these live items passed from static tests, mocks, documentation, or a successful shell exit.
+
+### PR #14 review regression repairs
+
+All four findings from the deep review are addressed:
+
+- Both helpers read UTF-8 JSON bytes rather than inheriting stdin's locale codec, and emit ASCII-safe JSON escapes. Subprocess regressions run under `PYTHONIOENCODING=cp1252` and `ascii`, asserting exact Unicode paths/content, revision fingerprints, and Unicode CLI output. Invalid UTF-8 blocks before launch.
+- CLI validation/process creation are separated from communication and reporting. Launch failures, post-dispatch uncertainty, and completed-process evidence stay distinct. A real scratch child writes a marker before a simulated broken stdout; completion evidence reaches stderr with `report_error`, and exit 2 prevents treating the report failure as permission to repeat the effect. No child in these tests accesses a vault.
+- Windows explicitly resolves `Obsidian.com` on PATH without a shell or GUI fallback. Platform construction tests cover spaces/Unicode arguments and missing redirector guidance; this is not a native Windows runtime test. Official behavior: [Obsidian CLI Windows redirector](https://obsidian.md/help/cli) and [CreateProcess extension selection](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-createprocessw).
+- Unified diffs split on LF rather than all `str.splitlines` separators. Regressions preserve Unicode line/paragraph separators, NEL, control characters, CRLF and final-newline variants. An optional system `patch` test applies generated diffs in scratch files and checks exact candidate bytes; it skips explicitly when `patch` is unavailable. No runtime dependency on `patch` is added.
+
+The suite now has 29 tests. All 29 also pass from a copied package path containing spaces with an unrelated CWD. Targeted locale/report/diff regressions fail against the pre-fix helpers, confirming they detect the original defects. The live follow-up requirements above remain unchanged; these repairs do not establish live CLI capability, native Windows execution, lossless Obsidian overwrite, rendering, or actual Codex installation/routing success.

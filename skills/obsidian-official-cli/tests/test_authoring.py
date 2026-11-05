@@ -9,7 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import cli
@@ -96,7 +96,10 @@ class LauncherTests(unittest.TestCase):
     def test_platform_argv_no_shell(self):
         args = ['vault=verified-id', 'append', 'path=Projects/Atlas.md', 'content=$x `id`']
         self.assertEqual(cli.command(args, platform='linux'), ['obsidian', *args])
-        self.assertEqual(cli.command(args, platform='win32'), ['obsidian', *args])
+        with patch('cli.shutil.which', return_value=r'C:\Program Files\Obsidian\Obsidian.com') as which:
+            self.assertEqual(cli.command(args, platform='win32'),
+                             [r'C:\Program Files\Obsidian\Obsidian.com', *args])
+            which.assert_called_once_with('Obsidian.com')
 
     @unittest.skipUnless(os.name == 'posix', 'requires POSIX shell paths')
     def test_macos_wrapper_quotes_arguments_and_override(self):
@@ -139,7 +142,14 @@ class LauncherTests(unittest.TestCase):
 
     def run_main(self, request, effect):
         output = io.StringIO()
-        with patch('cli.sys.stdin', io.StringIO(json.dumps(request))), contextlib.redirect_stdout(output), patch('cli.subprocess.run', side_effect=effect), patch('cli.command', return_value=['obsidian', 'version']):
+        process = Mock()
+        if isinstance(effect, Exception):
+            process.communicate.side_effect = effect
+        else:
+            result = effect()
+            process.communicate.return_value = (result.stdout, result.stderr)
+            process.returncode = result.returncode
+        with patch('cli.sys.stdin', io.StringIO(json.dumps(request))), contextlib.redirect_stdout(output), patch('cli.subprocess.Popen', return_value=process), patch('cli.command', return_value=['obsidian', 'version']):
             code = cli.main()
         return code, json.loads(output.getvalue())
 
@@ -160,7 +170,7 @@ class LauncherTests(unittest.TestCase):
 
     def test_malformed_request_never_launches(self):
         for request in [[], {'argv': ['version'], 'extra': 'oops'}, {'argv': [], 'content': 'x'}, {'argv': ['append', 'content=x'], 'content': 'y'}]:
-            with patch('cli.sys.stdin', io.StringIO(json.dumps(request))), contextlib.redirect_stdout(io.StringIO()), patch('cli.subprocess.run') as run:
+            with patch('cli.sys.stdin', io.StringIO(json.dumps(request))), contextlib.redirect_stdout(io.StringIO()), patch('cli.subprocess.Popen') as run:
                 self.assertEqual(cli.main(), 1)
                 run.assert_not_called()
 

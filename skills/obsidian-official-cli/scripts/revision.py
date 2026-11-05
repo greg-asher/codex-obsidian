@@ -2,13 +2,20 @@
 """Pure exact-text preview and state checks. Never writes notes or launches commands."""
 import difflib
 import hashlib
-import json
 from pathlib import Path, PurePosixPath
 import sys
+
+from json_protocol import emit_report, read_request
 
 
 def digest(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
+
+
+def lf_lines(text):
+    # Unified diff lines end at LF, not at Unicode separators or other controls.
+    parts = text.split('\n')
+    return [part + '\n' for part in parts[:-1]] + ([parts[-1]] if parts[-1] else [])
 
 
 def preview(before, old, new):
@@ -18,9 +25,8 @@ def preview(before, old, new):
         raise ValueError('old must match exactly once; resolve the target with more context')
     start = before.index(old)
     after = before[:start] + new + before[start + len(old):]
-    lines = difflib.unified_diff(before.splitlines(keepends=True),
-                                 after.splitlines(keepends=True),
-                                 fromfile='before', tofile='proposed')
+    lines = difflib.unified_diff(lf_lines(before), lf_lines(after),
+                                fromfile='before', tofile='proposed')
     diff = ''.join(line if line.endswith('\n') else
                    line + '\n\\ No newline at end of file\n' for line in lines)
     return {'before_sha256': digest(before), 'after_sha256': digest(after),
@@ -52,14 +58,13 @@ def contained_target(root, relative):
 
 def main():
     try:
-        request = json.load(sys.stdin)
+        request = read_request()
         if not isinstance(request, dict) or set(request) != {'before', 'old', 'new'}:
             raise ValueError('expected exactly {"before": text, "old": text, "new": text}')
-        print(json.dumps(preview(**request), ensure_ascii=False))
-        return 0
+        report = preview(**request)
     except (ValueError, TypeError, UnicodeError) as error:
-        print(json.dumps({'status': 'blocked', 'error': str(error)}))
-        return 1
+        return emit_report({'status': 'blocked', 'error': str(error)}, 1)
+    return emit_report(report, 0)
 
 
 if __name__ == '__main__':

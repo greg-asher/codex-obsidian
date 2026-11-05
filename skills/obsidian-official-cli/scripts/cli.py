@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Launch official Obsidian argv supplied as JSON on stdin. No workflow decisions."""
-import json
 import os
 from pathlib import Path
 import shlex
+import shutil
 import subprocess
 import sys
+
+from json_protocol import emit_report, read_request
 
 SANITIZE = ('unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME '
             'CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; ')
@@ -16,6 +18,13 @@ def command(argv, platform=sys.platform, environ=None):
         not isinstance(arg, str) or '\0' in arg for arg in argv
     ):
         raise ValueError('argv must be a nonempty JSON array of NUL-free strings')
+    if platform == 'win32':
+        redirector = shutil.which('Obsidian.com')
+        if not redirector:
+            raise ValueError('Obsidian.com terminal redirector not found on PATH; '
+                             'install Obsidian 1.12.7+, enable/register its CLI, '
+                             'and restart the terminal')
+        return [redirector, *argv]
     if platform != 'darwin':
         return ['obsidian', *argv]
     env = os.environ if environ is None else environ
@@ -39,7 +48,7 @@ def content_argument(text):
 
 def main():
     try:
-        request = json.load(sys.stdin)
+        request = read_request()
         if not isinstance(request, dict) or set(request) - {'argv', 'content'}:
             raise ValueError('expected {"argv": [...], "content": optional literal text}')
         argv = request.get('argv')
@@ -52,21 +61,37 @@ def main():
                 raise ValueError('provide content once, separately from argv')
             argv = [*argv, content_argument(request['content'])]
         launch = command(argv)
-        result = subprocess.run(launch, capture_output=True, timeout=30)
-        report = {'status': 'process-completed', 'returncode': result.returncode,
-                  'stdout': result.stdout.decode('utf-8', errors='replace'),
-                  'stderr': result.stderr.decode('utf-8', errors='replace')}
-        # A zero exit from Obsidian or script is not evidence of a completed write.
-        print(json.dumps(report, ensure_ascii=False))
-        return 0 if result.returncode == 0 else 1
-    except subprocess.TimeoutExpired as error:
-        print(json.dumps({'status': 'uncertain', 'error': '30-second timeout; inspect state and establish original completion before retry',
-                          'stdout': (error.stdout or b'').decode('utf-8', errors='replace'),
-                          'stderr': (error.stderr or b'').decode('utf-8', errors='replace')}))
-        return 2
     except (OSError, ValueError, TypeError) as error:
-        print(json.dumps({'status': 'launch-failed', 'error': str(error)}))
-        return 1
+        return emit_report({'status': 'launch-failed', 'error': str(error)}, 1)
+
+    # Keep pre-dispatch launch errors separate from errors after process creation.
+    try:
+        process = subprocess.Popen(launch, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except (OSError, ValueError, TypeError) as error:
+        return emit_report({'status': 'launch-failed', 'error': str(error)}, 1)
+    try:
+        stdout, stderr = process.communicate(timeout=30)
+        report = {'status': 'process-completed', 'returncode': process.returncode,
+                  'stdout': stdout.decode('utf-8', errors='replace'),
+                  'stderr': stderr.decode('utf-8', errors='replace')}
+        # A zero exit from Obsidian or script is not evidence of a completed write.
+        exit_code = 0 if process.returncode == 0 else 1
+    except subprocess.TimeoutExpired as error:
+        process.kill()
+        process.wait()
+        report = {'status': 'uncertain',
+                  'error': '30-second timeout; inspect state and establish original completion before retry',
+                  'stdout': (error.stdout or b'').decode('utf-8', errors='replace'),
+                  'stderr': (error.stderr or b'').decode('utf-8', errors='replace')}
+        exit_code = 2
+    except OSError as error:
+        report = {'status': 'uncertain',
+                  'error': 'Error after process creation; inspect state before retry: ' + str(error)}
+        exit_code = 2
+    finally:
+        process.stdout.close()
+        process.stderr.close()
+    return emit_report(report, exit_code)
 
 
 if __name__ == '__main__':
