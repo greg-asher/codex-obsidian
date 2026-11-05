@@ -22,17 +22,7 @@ Remember:
 
 ## Mutation session recipe
 
-For reliable mutations in Codex:
-
-1. Resolve the vault target.
-2. Resolve the exact note target.
-3. Ensure the parent folder situation is handled for `create path=...` or similar exact-path mutations.
-4. Run a lightweight read-only probe such as `obsidian version`, `read`, or `daily:read`.
-5. If the vault path is outside writable roots, try the wrapped CLI mutation first when available.
-6. If the wrapped CLI mutation fails for write-permission reasons, or a required support step cannot run in-sandbox, request escalated execution for the wrapped command.
-7. Immediately verify with `read path=...`, `daily:read`, or an on-disk check.
-
-Use this sequence especially when the vault lives outside the current workspace.
+Use the [shared authoring/revision procedure](authoring-and-revision.md) for vault identity/root/path resolution, current-content inspection, substantive previews, matching authorization, collision/recheck/retry behavior, and effect verification. That procedure also defines lossless whole-file transport for section revisions and specific blockers when it cannot be established. For arbitrary supplied content, use JSON and `../scripts/cli.py` instead of interpolating it into the illustrative shell commands below. Static shell examples are for known literal text only.
 
 ## Codex-safe launcher
 
@@ -86,7 +76,7 @@ script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset
 
 ### Create a note
 ```bash
-script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" create name="Project Brief"'
+script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset __CFBundleIdentifier LaunchInstanceID XPC_SERVICE_NAME CODEX_CI CODEX_SANDBOX CODEX_SHELL; export TERM=xterm-256color; obsidian vault="My Vault" create path="Projects/Project Brief.md"'
 ```
 
 ### Create a note with content
@@ -96,12 +86,12 @@ script -q /dev/null "${CODEX_OBSIDIAN_ZSH_PATH:-/usr/local/bin/zsh}" -ilc 'unset
 
 Important:
 - `create path=...` should assume the parent folder already exists unless official CLI docs prove otherwise.
-- If `Projects/` does not already exist, first use the documented CLI path if it works in this environment. If the CLI fails specifically because the parent folder is missing, create the parent folder locally and retry.
+- If `Projects/` does not already exist, first try the CLI. After a specific missing-parent failure, inspect state, validate containment under the resolved vault root, create the parent only when permitted, recheck absence, and retry once. Never run a relative `mkdir` from the repository.
 - Keep the note-content creation itself on the official CLI path.
 
 ### Create from a template
 ```bash
-obsidian vault="My Vault" create name="Trip to Paris" template=Travel
+obsidian vault="My Vault" create path="Trips/Trip to Paris.md" template=Travel
 ```
 
 ### Append content
@@ -256,15 +246,17 @@ obsidian vault="My Vault" diff path="Projects/Kestrel.md" from=2 to=1
 
 ## Failure triage
 
+A mutation error/timeout can follow an applied or still-in-flight effect. Follow the shared state/completion checks before repeating any write, including a privileged retry. A disabled CLI or unsupported option is a capability blocker, not grounds for escalation.
+
 - `read` works but write fails:
   - suspect sandbox or write-permission boundaries first
   - if the wrapped CLI mutation failed for write-permission reasons, escalate the wrapped command before retrying
 - direct `version`, `read`, or `daily:read` crash from Codex Desktop on macOS:
   - retry with the sanitized `script + zsh -ilc` wrapper first
   - if the wrapped probe succeeds, continue using the wrapped launch form for the rest of the session
-  - if the wrapped probe still fails and the command is important, retry it under escalated execution
+  - if the wrapped read-only probe is launch/IPC sandbox-blocked and important, retry it under escalated execution
   - if the wrapped probe also fails under escalation, then suspect Obsidian launch or runtime problems and ask the user to open Obsidian manually before retrying
 - `create path=...` fails and the parent folder is missing:
-  - create the missing parent folder locally, then retry the CLI mutation
+  - inspect actual state; validate the parent under the resolved canonical vault root (never repo CWD), create it only when permitted, recheck collision state, then retry the CLI mutation once
 - a non-content vault structure operation is needed before the CLI can proceed:
   - do the smallest safe filesystem step needed, then return to the CLI flow

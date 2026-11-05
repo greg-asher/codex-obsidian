@@ -20,7 +20,7 @@ Use this checklist when refining the plugin in this repository.
 6. Confirm `SKILL.md` requires exact `path=` for note-content mutations, except for explicit documented daily-note commands, and forbids mutating ambiguous `file=` targets.
 7. Confirm `SKILL.md` explicitly prefers structured output when the command supports it.
 8. Confirm `SKILL.md` requires a read-only app/CLI probe before the first mutation in a session.
-9. Confirm `SKILL.md` tells Codex to request escalated execution when the target vault is outside writable roots.
+9. Confirm escalation follows an actual permission/IPC failure or blocked required support step; an external vault alone does not require escalation.
 10. Confirm `SKILL.md` documents the Codex Desktop macOS launch wrapper and explains why direct `obsidian` child launches can crash.
 11. Confirm `SKILL.md` separates wrapped command form from escalation policy and tells Codex to escalate the wrapped command when needed.
 12. Confirm `CODEX_OBSIDIAN_ZSH_PATH` overrides the launcher shell while the unset case still resolves to `/usr/local/bin/zsh`.
@@ -39,7 +39,7 @@ skills/obsidian-official-cli/assets/eval-prompts.csv
 You want:
 
 - positive prompts to activate the skill
-- implicit positive prompts to activate the skill selectively
+- implicit probes to remain inactive while `allow_implicit_invocation: false`; assess candidate relevance separately from automatic activation
 - implicit negative prompts to stay out of scope
 - safety prompts to stop before ambiguous mutations
 - negative prompts to refuse cleanly
@@ -76,7 +76,7 @@ During manual checks, verify:
 - the CLI remains the preferred path for note-content mutations even when filesystem support is used
 - read-only discovery happens before broad note-name mutations
 - structured output is used when the command supports it
-- responses state whether the target is active-file, resolved-file, exact-path, daily-note, ambiguous, or none
+- routine responses give concise result, target and verification; detailed target/execution evidence is retained and supplied on request or failure
 
 ## When to enable implicit invocation
 
@@ -85,3 +85,41 @@ Only switch `allow_implicit_invocation` to `true` after:
 - the explicit behavior feels correct
 - the skill boundaries stay clean
 - the prompt checks and manual checks route consistently
+
+## Issue #10 reproducible checks
+
+From plugin root:
+
+```bash
+python3 -B -m unittest discover -s skills/obsidian-official-cli/tests -v
+```
+
+The tests execute pure section-splice/state/containment mechanics, actual shell argument recording, and mocked process failure paths. They assert preservation of unrelated frontmatter/body/links, duplicate/missing/overlapping-match rejection, final-newline/CRLF/Unicode preview preservation, stale/partial/collision comparisons, applied-effect detection, symlink/traversal containment, no preview parent creation, macOS default/override construction, shell metacharacters as argv data, malformed requests, and uncertain timeout classification. Pure `ready` comparison alone never authorizes retry of an in-flight operation. Test assertions do **not** establish live CLI capabilities, runtime metadata serialization, vault identity enforcement by Obsidian, exactly-once app execution, or Markdown rendering.
+
+Fixtures: `tests/fixtures/Atlas.md` models a project with properties, risks/mitigation, links, a callout, and hostile-looking quoted data; `Rollout.md` supplies a decision block and embed example. For a disposable vault, place them at `Projects/Atlas.md` and `Decisions/Rollout.md`, add `People/Sam.md` as the link destination, and keep an unrelated duplicate-title Atlas note in another folder for ambiguity checks.
+
+### Evidence recorded 2026-11-05
+
+- Initial sanitized default launcher failed because `/usr/local/bin/zsh` is absent. Supported `/bin/zsh` override reached the installed `obsidian` command.
+- Sanitized `version`, `help append`, `help prepend`, `help create`, `help vault`, `help vaults`, `help property:set`, and `help template:read` all returned “Command line interface is not enabled” (overall process exit 0). Shell startup also reported blocked fnm/pyenv writes. The disabled message is the capability blocker; no personal vault mutation/settings changes were attempted.
+- Official current documentation was inspected for CLI operations and Obsidian format/template semantics. Competitor sources were read as research only.
+- An independent instruction forward review covered duplicate headings/titles + active-vault switch, uncertain append completion, CRLF/literal escape revision, missing parent outside repository CWD, and a saved report collision. Its timeout finding led to requiring original-operation completion/quiescence before any retry; an unchanged target alone is insufficient. A generic harmless delayed-child experiment confirmed why wrapper timeout cannot prove quiescence; it was not an Obsidian test.
+
+### Completed independent checks
+
+- 19 deterministic helper/fixture tests passed, including actual shell argv recording; all 19 also passed from a copied skill package in a path containing spaces, launched from an unrelated CWD.
+- Plugin/marketplace JSON and asset paths, all seven skill frontmatter and agent YAML files, explicit invocation policies, eval CSV shape/unique IDs, local Markdown links, and all 18 retained workflow IDs checked successfully. Six pre-existing unquoted-comma notes fields were repaired without changing evaluation semantics.
+- Skill-creator `quick_validate.py` passed for the core skill (its PyYAML tooling dependency was supplied in an isolated temporary uv environment; bundled helpers remain standard-library only). Whitespace/diff checks passed.
+- New launcher executed a real sanitized `version` probe with `/bin/zsh` and correctly reported only `process-completed` plus raw disabled-CLI diagnostics, rather than claiming verified capability/success.
+
+### Required live follow-up (not verified here)
+
+With CLI enabled/registered and a disposable vault explicitly selected:
+
+1. Record installed version/help and unique vault ID/root mapping. Verify ordinary exact-path read/create/append/property set/read with before/after raw bytes. Include quotes, apostrophes, backticks, dollars, multiline/tab, backslashes and Unicode. Check final newline/BOM behavior before whole-file transport. Record unsupported literal-escape/CRLF cases as blocked unless a lossless mechanism is proved.
+2. Test a single Risks revision, duplicate headings/titles, active-vault switch between preview/apply, concurrent local edit, collision, missing parents under the intended vault, lost response/post-read, in-flight original operation, and safe resume. Verify no unrelated note/configuration changes. Do not intentionally cause uncertain mutations in a personal vault.
+3. Inspect links/alias labels, heading/block navigation, embed, callout folding and typed properties in Reading view/Live Preview. Record correctness and manual corrections; fixture syntax is not visual proof.
+4. Run a representative project decision capture/saved briefing/revision and record usefulness/omissions. Cross-capability Bases/Canvas dashboard validation remains with #11/#12; this issue does not implement those formats.
+5. Refresh/reinstall the cached plugin via the established marketplace flow, explicitly invoke the core skill, and verify the bundled helper resolves relative to that installed skill from an unrelated CWD. Static copied-package tests cover path portability only, not Codex UI installation or routing.
+
+Never label these live items passed from static tests, mocks, documentation, or a successful shell exit.
