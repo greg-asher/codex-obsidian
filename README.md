@@ -2,10 +2,11 @@
 
 `codex-obsidian` is a Codex plugin for local Obsidian workflows through the official desktop `obsidian` CLI.
 
-It currently ships seven focused skills:
+It currently ships eight focused skills:
 
 - `obsidian-official-cli` for core note/metadata workflows, Obsidian Markdown authoring, and reviewed section revisions.
 - `obsidian-cli-bases-and-bookmarks` for Bases discovery/query and bookmark workflows.
+- `obsidian-bases-authoring` for creating and revising table definitions and verifying dashboard results.
 - `obsidian-cli-runtime-admin` for plugin/theme/snippet and command/hotkey runtime administration.
 - `obsidian-cli-devtools` for runtime diagnostics and developer-command workflows.
 - `obsidian-cli-sync-and-publish` for Sync workflows and capability-gated Publish workflows with explicit side-effect guardrails.
@@ -24,6 +25,7 @@ It currently ships seven focused skills:
 
 - Use `obsidian-official-cli` for note content and knowledge workflows.
 - Use `obsidian-cli-bases-and-bookmarks` for Bases and bookmark query/creation workflows.
+- Use `obsidian-bases-authoring` to preview or revise a `.base` definition.
 - Use `obsidian-cli-runtime-admin` for runtime configuration and command registry workflows.
 - Use `obsidian-cli-devtools` for runtime diagnostics, screenshots, and explicit eval/CDP workflows.
 - Use `obsidian-cli-sync-and-publish` for Sync state and remote-side-effect operations, and for Publish only when publish commands are available.
@@ -59,6 +61,10 @@ Select **Obsidian CLI Workflows** and ask to capture a meeting, decision, idea, 
 
 Public web sources retain provenance, and CSV or JSON batches use explicit field mapping and report each item's outcome. The bundled renderer uses Python 3.9+ and the shared authoring workflow handles writes and retries. [Capture recipes and examples](skills/obsidian-cli-workflows/references/capture-recipes.md)
 
+## Bases Dashboards
+
+Select **Obsidian Bases Authoring** and ask for a table over an explicit folder, or run `workflow_id=base.dashboard mode=preview` through the workflow skill. Preview the definition or selected-view diff, representative expected rows, and approved target before apply. The official desktop CLI writes and queries the definition. Creation uses Python 3.9+ and existing YAML edits require PyYAML 6 in the selected environment. [Bases dashboard authoring](skills/obsidian-bases-authoring/references/table-dashboard.md)
+
 ## Controlled Note Authoring
 
 Invoke `$obsidian-official-cli`, for example: “Update the Risks section of Projects/Atlas.md in Work using these findings.” The skill resolves both vault and exact path, reads current content, previews a minimal diff, rechecks before apply, and verifies the result. It preserves unrelated content and inspects state before retrying a timeout. Existing-file creation defaults to a collision; overwrite requires a reviewed, approved write. Workflow note outputs reuse the same contract.
@@ -69,7 +75,7 @@ Section revision has no assumed native patch command. It uses a reviewed exact-t
 
 Prerequisites: official Obsidian desktop installer 1.12.7+ with CLI enabled/registered and app available. Optional bundled helpers require Python 3.9+ (standard library only). They handle JSON arguments and exact-text previews; they do not install services, configure vaults, or write note content directly. Resolve helper paths from the installed skill, including cached copies. See [authoring/revision details](skills/obsidian-official-cli/references/authoring-and-revision.md) and [validation evidence/remaining live checks](skills/obsidian-official-cli/references/validation.md).
 
-All seven skills retain explicit invocation. Cited retrieval and recipe capture accept plain language after selecting the workflow skill. Other named orchestration uses `workflow_id=`.
+All eight skills retain explicit invocation. Cited retrieval and recipe capture accept plain language after selecting the workflow skill. Other named orchestration uses `workflow_id=`.
 
 ## What This Plugin Does Not Do
 

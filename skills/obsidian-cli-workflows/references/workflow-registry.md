@@ -4,7 +4,7 @@ This registry is decision-complete for `obsidian-cli-workflows`.
 
 ## Shared note-output foundation
 
-All 18 entries below retain their IDs and domain ownership. Any capture, synthesis/report save, task-log insertion, property repair, or optional `output=note` delegates to the core [authoring/revision contract](../../obsidian-official-cli/SKILL.md) and [procedure](../../obsidian-official-cli/references/authoring-and-revision.md). A destination path alone is insufficient: resolve and retain vault identity/root too. Preview exact content/diff and collision policy; recheck before apply, verify after, and reconcile uncertain completion before retry. Existing-file default is block unless an approved append/revision/replacement policy applies. A note save promotes a read-only workflow to medium risk and requires matching apply authorization. Preview never writes. Matching existing approval is sufficient.
+Each entry below retains its domain ownership. Any capture, synthesis/report save, task-log insertion, property repair, or optional `output=note` delegates to the core [authoring/revision contract](../../obsidian-official-cli/SKILL.md) and [procedure](../../obsidian-official-cli/references/authoring-and-revision.md). A destination path alone is insufficient: resolve and retain vault identity/root too. Preview exact content/diff and collision policy; recheck before apply, verify after, and reconcile uncertain completion before retry. Existing-file default is block unless an approved append/revision/replacement policy applies. A note save promotes a read-only workflow to medium risk and requires matching apply authorization. Preview never writes. Matching existing approval is sufficient.
 
 An explicitly selected capture recipe for saving a briefing or a daily workflow draft is a separately previewed create-only note. See [capture recipes](capture-recipes.md).
 
@@ -156,7 +156,7 @@ A single `recipe=decision` without a requested capture date uses the [undated de
 - `required_inputs`: `base`, `view`
 - `optional_inputs`: `format=json|csv`, `output_note_path`
 - `chained_steps`:
-  1. `obsidian-cli-bases-and-bookmarks`: `bases`, `base:views`
+  1. `obsidian-cli-bases-and-bookmarks`: discover exact path with `bases` and use `base:views` only if the intended base is already confirmed active
   2. `obsidian-cli-bases-and-bookmarks`: `base:query`
 - `default_output`: structured snapshot plus quick summary metrics
 - `risk_level`: low
@@ -168,7 +168,7 @@ A single `recipe=decision` without a requested capture date uses the [undated de
 - `required_inputs`: `base`, `view`, `item_data`
 - `optional_inputs`: `open_after_create`, `target_path`
 - `chained_steps`:
-  1. `obsidian-cli-bases-and-bookmarks`: `base:views` validation
+  1. `obsidian-cli-bases-and-bookmarks`: validate the named view with pinned `base:query path=... view=...`
   2. `obsidian-cli-bases-and-bookmarks`: `base:create`
   3. `obsidian-cli-workspace-and-navigation`: `open` or `tab:open` (optional)
 - `default_output`: created-item summary with resulting file/path identifiers
@@ -254,3 +254,18 @@ A single `recipe=decision` without a requested capture date uses the [undated de
 - `default_output`: capability gate verdict + publish readiness report
 - `risk_level`: high
 - `apply_guardrails`: if probe unsupported, block with explicit reason and run no `publish:*` commands
+
+### 19) `base.dashboard`
+- `internal_id`: `wf_base_dashboard`
+- `intent`: author or revise a table definition and verify representative dashboard results
+- `required_inputs`: exact `.base` destination, explicit collection scope, table specification, and expected result checks. Edits also require an exact existing view.
+- `optional_inputs`: view filters, sort, grouping, supported formulas and summaries, and bounded row limit
+- `chained_steps`:
+  1. `obsidian-cli-workspace-and-navigation`: pin vault identity and canonical root
+  2. `obsidian-official-cli`: inspect representative note properties and check exact target
+  3. `obsidian-bases-authoring`: validate and preview definition or scoped diff
+  4. `obsidian-official-cli`: after matching approval, apply and verify exact `.base` bytes through the shared authoring safeguards
+  5. `obsidian-cli-bases-and-bookmarks`: query exact path and named view and compare with expected results
+- `default_output`: structural, write and live result status with exact target, candidate or diff, and any metadata or capability gaps
+- `risk_level`: medium
+- `apply_guardrails`: follow the [Bases authoring contract](../../obsidian-bases-authoring/SKILL.md), verify CLI suffix/content capability, require exact create-only absence or approved scoped overwrite, and preserve collection notes

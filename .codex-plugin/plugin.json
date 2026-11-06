@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Codex Obsidian",
     "shortDescription": "Local Obsidian workflows through the official desktop CLI.",
-    "longDescription": "Install focused Codex skills for local Obsidian note workflows with reviewed authoring/revision and verified write outcomes, cited vault answers, project handoffs, and reusable capture recipes for conversation, web sources, and CSV or JSON, Bases/Bookmarks operations, runtime administration, devtools diagnostics, Sync operations, capability-gated Publish operations, workspace/navigation workflows, and named one-command orchestration workflows through documented official desktop CLI commands.",
+    "longDescription": "Install focused Codex skills for local Obsidian note workflows with reviewed authoring/revision and verified write outcomes, cited vault answers, project handoffs, and reusable capture recipes for conversation, web sources, and CSV or JSON, Bases table authoring and dashboard verification, Bases/Bookmarks operations, runtime administration, devtools diagnostics, Sync operations, capability-gated Publish operations, workspace/navigation workflows, and named one-command orchestration workflows through documented official desktop CLI commands.",
     "developerName": "Greg Asher",
     "category": "Productivity",
     "capabilities": [
@@ -29,7 +29,7 @@
     "defaultPrompt": [
       "Use the Obsidian CLI Workflows skill to answer a vault question with cited notes and flag conflicting evidence.",
       "Use the Obsidian Official CLI skill to preview a targeted revision to a note.",
-      "Use the Obsidian CLI Bases and Bookmarks skill to query a Base view in JSON."
+      "Use Obsidian Bases Authoring to preview a table dashboard over existing note properties."
     ],
     "brandColor": "#5C43A8",
     "websiteURL": "https://github.com/greg-asher/codex-obsidian",

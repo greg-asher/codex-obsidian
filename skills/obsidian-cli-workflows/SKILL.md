@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli-workflows
-description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, capture recipes, explained related-note suggestions, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
+description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, capture recipes, related-note suggestions, Bases dashboards, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
 ---
 
 # Obsidian CLI Workflows
@@ -13,6 +13,7 @@ Use this skill when:
 - the user asks for a named one-command workflow ID such as `tasks.rollup` or `daily.bootstrap`
 - the user asks for a cited vault answer, evidence pack, project briefing or handoff, or explained related notes after explicitly selecting this skill
 - the user asks to capture a meeting, decision, idea, kickoff, source, or structured batch with a recipe after selecting this skill
+- the user asks to author a Bases table dashboard after explicitly selecting this skill
 - the user wants a preview/apply orchestration plan that may span multiple domain skills
 - the user asks to run a multi-step vault workflow with explicit risk classification and side-effect reporting
 
@@ -29,6 +30,7 @@ Select this skill explicitly. For named calls, use a registered `workflow_id=<co
 - Cited vault answer, topic evidence pack, or explained related notes → `research.pack`.
 - Project status briefing or explicit handoff → `project.status_digest`.
 - Explicit recipe capture → `inbox.capture`, or `project.kickoff` for a kickoff recipe. Ask for missing required inputs when the selected recipe cannot be resolved.
+- Bases table definition or dashboard → `base.dashboard`.
 - Ask which registered ID to use for other orchestration requests. A raw command or single-note operation goes to its domain skill.
 
 Common controls:
@@ -51,9 +53,13 @@ Follow [capture recipes](references/capture-recipes.md) for conversation input, 
 
 Report per-item outcomes for batches. Preflight the whole approved batch, verify each write, stop at the first uncertain or failed operation, and retain the shared session ledger for safe resumption. Keep generated content, target scope and collision policy fixed between preview and apply.
 
+## Bases dashboard contract
+
+For `base.dashboard`, use the [Bases authoring skill](../obsidian-bases-authoring/SKILL.md). Preview a full new definition or a scoped diff and expected result matrix before writing. Apply only matching approved targets through the verified CLI transport. Report structural validation, exact artifact verification, and observed live results separately. Keep existing Bases queries and item creation on their registered routes.
+
 ## Core orchestration policy
 
-1. This skill owns orchestration logic only and does not replace direct command ownership contracts of the six domain skills.
+1. This skill owns orchestration logic only and does not replace direct command ownership contracts of the domain skills.
 2. Named workflows default to `mode=preview`. The read-only natural-language and evidence-gathering cases above still require zero vault writes.
 3. Preview output must include step plan, target summary, risk classification, and required confirmations. A requested note-save preview also includes the exact draft when evidence is available.
 4. Apply output must include executed-step list, skipped-step list, and explicit mutation summaries.
@@ -71,7 +77,7 @@ Report per-item outcomes for batches. Preflight the whole approved batch, verify
 
 ## Codex-safe launcher and escalation policy
 
-This skill delegates execution to the six domain skills.
+This skill delegates execution to the domain skills.
 For delegated command execution, inherit the same sanitized launcher and escalation behavior already defined in those skills.
 
 ## Risk model
