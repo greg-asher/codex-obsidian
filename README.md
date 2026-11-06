@@ -10,7 +10,7 @@ It currently ships seven focused skills:
 - `obsidian-cli-devtools` for runtime diagnostics and developer-command workflows.
 - `obsidian-cli-sync-and-publish` for Sync workflows and capability-gated Publish workflows with explicit side-effect guardrails.
 - `obsidian-cli-workspace-and-navigation` for vault/workspace/tab/navigation and utility workflows.
-- `obsidian-cli-workflows` for named one-command orchestration across the six domain skills with preview-first execution.
+- `obsidian-cli-workflows` for cited vault answers, explained related notes, project handoffs, and named workflows with preview/apply controls.
 
 ## What This Plugin Does
 
@@ -28,7 +28,7 @@ It currently ships seven focused skills:
 - Use `obsidian-cli-devtools` for runtime diagnostics, screenshots, and explicit eval/CDP workflows.
 - Use `obsidian-cli-sync-and-publish` for Sync state and remote-side-effect operations, and for Publish only when publish commands are available.
 - Use `obsidian-cli-workspace-and-navigation` for vault/workspace/tab/navigation operations and utility commands.
-- Use `obsidian-cli-workflows` for named orchestration workflows that chain the domain skills in preview/apply mode.
+- Use `obsidian-cli-workflows` for cited multi-note retrieval or named orchestration across domain skills.
 
 See the detailed matrix and chaining recipes in:
 
@@ -43,6 +43,16 @@ Use explicit workflow command IDs through `obsidian-cli-workflows`:
 - `workflow_id=workspace.focus_mode mode=preview`
 - `workflow_id=workspace.focus_mode mode=apply` (run only after preview + explicit confirmation)
 
+## Cited Vault Answers and Handoffs
+
+Select **Obsidian CLI Workflows** in Codex (installed skill ID `codex-obsidian:obsidian-cli-workflows`) and ask, for example:
+
+- In Work under Projects/Atlas, what did we decide about authentication? Cite the notes and flag conflicting evidence and open questions.
+- Find notes related to Projects/Atlas/Decision.md in Work. Explain each match with an excerpt.
+- Prepare an Atlas handoff from Work, excluding Projects/Atlas/Private. Preview saving it to Handoffs/Atlas.md.
+
+Results are inline and read-only by default. Search, tag checks, and one-hop links provide bounded coverage. Each material claim is tied to a note path and heading or line when available. Save previews show the exact destination, content and collision policy before apply. Bounded retrieval uses the bundled launcher with Python 3.9+ or an equivalent bounded runner. See the [retrieval playbook](skills/obsidian-cli-workflows/references/cited-retrieval.md) for inputs and limits.
+
 ## Controlled Note Authoring
 
 Invoke `$obsidian-official-cli`, for example: “Update the Risks section of Projects/Atlas.md in Work using these findings.” The skill resolves both vault and exact path, reads current content, previews a minimal diff, rechecks before apply, and verifies the result. It preserves unrelated content and inspects state before retrying a timeout. Existing-file creation defaults to a collision; overwrite requires a reviewed, approved write. Workflow note outputs reuse the same contract.
@@ -51,7 +61,7 @@ Section revision has no assumed native patch command. It uses a reviewed exact-t
 
 Prerequisites: official Obsidian desktop installer 1.12.7+ with CLI enabled/registered and app available. Optional bundled helpers require Python 3.9+ (standard library only). They handle JSON arguments and exact-text previews; they do not install services, configure vaults, or write note content directly. Resolve helper paths from the installed skill, including cached copies. See [authoring/revision details](skills/obsidian-official-cli/references/authoring-and-revision.md) and [validation evidence/remaining live checks](skills/obsidian-official-cli/references/validation.md).
 
-All seven skills retain explicit invocation. Natural-language examples describe requests after selecting a skill; named orchestration still uses `workflow_id=`.
+All seven skills retain explicit invocation. Cited retrieval accepts plain language after selecting the workflow skill. Other named orchestration uses `workflow_id=`.
 
 ## What This Plugin Does Not Do
 

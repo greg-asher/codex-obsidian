@@ -19,6 +19,8 @@ Use this matrix to pick the right skill and chain them safely.
   - vault/workspace/tab/navigation and utility workflows
 - `obsidian-cli-workflows`:
   - one-command orchestration by named workflow ID with preview/apply controls
+  - after explicit skill selection, cited questions and related notes use `research.pack`; briefings and handoffs use `project.status_digest`
+  - vault discovery delegates to workspace/navigation; bounded note evidence and optional saves delegate to the core skill
   - owns workflow IDs only; delegates direct command execution to the six domain skills
 
 ## Routing examples
@@ -30,6 +32,8 @@ Use this matrix to pick the right skill and chain them safely.
 - "Show console errors from my plugin" -> `obsidian-cli-devtools`
 - "Check sync status and, if publish commands are supported, publish changed files" -> `obsidian-cli-sync-and-publish`
 - "Load the Daily Review workspace, inspect recents, then open a note in a new tab" -> `obsidian-cli-workspace-and-navigation`
+- "Use $obsidian-cli-workflows to give me an Atlas handoff with sources" -> `project.status_digest`
+- "Use $obsidian-cli-workflows to explain related notes for Projects/Atlas/Decision.md" -> `research.pack`
 - "Run workflow_id=tasks.rollup mode=preview output=json" -> `obsidian-cli-workflows`
 - "Run workflow_id=workspace.focus_mode mode=apply workspace_name=Focus" -> `obsidian-cli-workflows`
 
