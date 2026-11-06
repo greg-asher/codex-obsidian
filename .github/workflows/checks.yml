@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    # setup-python provides the minimum supported Python on this image.
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: ['3.9', '3.13']
