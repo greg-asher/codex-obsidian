@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli-workflows
-description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, capture recipes, related-note suggestions, Bases dashboards, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
+description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, capture recipes, related-note suggestions, Bases dashboards, Canvas maps, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
 ---
 
 # Obsidian CLI Workflows
@@ -14,6 +14,7 @@ Use this skill when:
 - the user asks for a cited vault answer, evidence pack, project briefing or handoff, or explained related notes after explicitly selecting this skill
 - the user asks to capture a meeting, decision, idea, kickoff, source, or structured batch with a recipe after selecting this skill
 - the user asks to author a Bases table dashboard after explicitly selecting this skill
+- the user asks to author a source-linked Canvas after explicitly selecting this skill
 - the user wants a preview/apply orchestration plan that may span multiple domain skills
 - the user asks to run a multi-step vault workflow with explicit risk classification and side-effect reporting
 
@@ -31,6 +32,7 @@ Select this skill explicitly. For named calls, use a registered `workflow_id=<co
 - Project status briefing or explicit handoff → `project.status_digest`.
 - Explicit recipe capture → `inbox.capture`, or `project.kickoff` for a kickoff recipe. Ask for missing required inputs when the selected recipe cannot be resolved.
 - Bases table definition or dashboard → `base.dashboard`.
+- Source-linked Canvas map or process flow → `canvas.map`.
 - Ask which registered ID to use for other orchestration requests. A raw command or single-note operation goes to its domain skill.
 
 Common controls:
@@ -56,6 +58,10 @@ Report per-item outcomes for batches. Preflight the whole approved batch, verify
 ## Bases dashboard contract
 
 For `base.dashboard`, use the [Bases authoring skill](../obsidian-bases-authoring/SKILL.md). Preview a full new definition or a scoped diff and expected result matrix before writing. Apply only matching approved targets through the verified CLI transport. Report structural validation, exact artifact verification, and observed live results separately. Keep existing Bases queries and item creation on their registered routes.
+
+## Canvas map contract
+
+For `canvas.map`, use the [Canvas authoring skill](../obsidian-canvas-authoring/SKILL.md). Reuse bounded cited retrieval for sources, then preview the exact Canvas or scoped diff with evidence, layout warnings and write policy. Apply through shared controlled authoring only after matching approval. Report source validation, exact artifact verification and live readability separately.
 
 ## Core orchestration policy
 

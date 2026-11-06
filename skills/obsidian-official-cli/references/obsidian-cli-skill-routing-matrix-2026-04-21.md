@@ -19,6 +19,8 @@ Use this matrix to pick the right skill and chain them safely.
   - vault/workspace/tab/navigation and utility workflows
 - `obsidian-bases-authoring`:
   - preview and revise table definition artifacts, then delegate exact-path writes and runtime queries
+- `obsidian-canvas-authoring`:
+  - preview and revise source-linked Canvas maps, then delegate exact-path transport and navigation
 - `obsidian-cli-workflows`:
   - one-command orchestration by named workflow ID with preview/apply controls
   - after explicit skill selection, cited questions and related notes use `research.pack`; briefings and handoffs use `project.status_digest`

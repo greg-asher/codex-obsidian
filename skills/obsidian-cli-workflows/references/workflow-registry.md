@@ -269,3 +269,18 @@ A single `recipe=decision` without a requested capture date uses the [undated de
 - `default_output`: structural, write and live result status with exact target, candidate or diff, and any metadata or capability gaps
 - `risk_level`: medium
 - `apply_guardrails`: follow the [Bases authoring contract](../../obsidian-bases-authoring/SKILL.md), verify CLI suffix/content capability, require exact create-only absence or approved scoped overwrite, and preserve collection notes
+
+### 20) `canvas.map`
+- `internal_id`: `wf_canvas_map`
+- `intent`: author or revise a source-linked research map, project overview or process flow
+- `required_inputs`: exact `.canvas` destination, purpose, layout and source or process scope. Edits require exact record IDs.
+- `optional_inputs`: selected notes, verified subpaths, relationship labels and explicit URLs
+- `chained_steps`:
+  1. `obsidian-cli-workspace-and-navigation`: pin vault and canonical root
+  2. `obsidian-official-cli`: verify exact source and target paths, using cited retrieval when needed
+  3. `obsidian-canvas-authoring`: validate source links and layout, preview exact content or scoped diff
+  4. `obsidian-official-cli`: apply the approved artifact through verified exact-path CLI transport and verify bytes
+  5. `obsidian-cli-workspace-and-navigation`: open the exact map for visual inspection when authorized
+- `default_output`: source and relationship evidence, layout warnings, candidate or diff, write and visual status
+- `risk_level`: medium
+- `apply_guardrails`: follow the [Canvas authoring contract](../../obsidian-canvas-authoring/SKILL.md), preserve unrelated records and source notes, and never silently overwrite
