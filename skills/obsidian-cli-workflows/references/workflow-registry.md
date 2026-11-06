@@ -78,16 +78,13 @@ Global apply policy:
 
 ### 5) `project.status_digest`
 - `internal_id`: `wf_status_digest`
-- `intent`: summarize project status from folder-level tasks and metadata
-- `required_inputs`: `project_path`
-- `optional_inputs`: `status_property`, `write_digest_note`, `digest_note_path`
-- `chained_steps`:
-  1. `obsidian-official-cli`: `search path=...`
-  2. `obsidian-official-cli`: `tasks path=... format=json`
-  3. `obsidian-official-cli`: `properties` / `property:read`
-- `default_output`: status digest grouped by state and blockers
-- `risk_level`: low
-- `apply_guardrails`: writing digest note requires explicit destination path
+- `intent`: build a cited project briefing or explicit handoff
+- `required_inputs`: `project_path`, project name, or selected notes identifying the project
+- `optional_inputs`: `view=briefing|handoff` (default `briefing`), `query`, `status_property`, shared [retrieval inputs](cited-retrieval.md#inputs-and-scope). Keep `project_path` as the folder alias and `write_digest_note` / `digest_note_path` as save aliases.
+- `chained_steps`: workspace/navigation resolves vault identity; core skill retrieves and verifies sources with [shared cited retrieval](cited-retrieval.md), using tasks/properties on selected notes where useful; workflow skill synthesizes the briefing or handoff.
+- `default_output`: inline scope, current state, decisions, blockers, next actions and cited sources
+- `risk_level`: low for retrieval, medium for note output
+- `apply_guardrails`: recheck evidence and delegate any requested save to shared authoring after matching approval
 
 ### 6) `tasks.rollup`
 - `internal_id`: `wf_task_rollup`
@@ -116,16 +113,13 @@ Global apply policy:
 
 ### 8) `research.pack`
 - `internal_id`: `wf_research_pack`
-- `intent`: build topic-focused research pack from related vault notes
-- `required_inputs`: `query`
-- `optional_inputs`: `scope_path`, `max_notes`, `write_pack_note`, `pack_note_path`
-- `chained_steps`:
-  1. `obsidian-official-cli`: `search:context query=...`
-  2. `obsidian-official-cli`: `outline` on selected notes
-  3. `obsidian-official-cli`: `backlinks`, `links`
-- `default_output`: synthesized topic pack with source note references
-- `risk_level`: low
-- `apply_guardrails`: write mode requires explicit output note path
+- `intent`: answer a vault question, build a topic evidence pack, or explain related notes
+- `required_inputs`: `query`; for related notes, selected notes may supply the anchor instead
+- `optional_inputs`: `view=answer|pack|related` (default `pack` for named calls), shared [retrieval inputs](cited-retrieval.md#inputs-and-scope). Keep `scope_path` as the folder alias and `write_pack_note` / `pack_note_path` as save aliases.
+- `chained_steps`: workspace/navigation resolves vault identity; core skill retrieves and verifies sources with [shared cited retrieval](cited-retrieval.md); workflow skill answers, builds the pack, or explains the recommendations.
+- `default_output`: inline cited findings with conflicts and gaps, or explained related notes with excerpts
+- `risk_level`: low for retrieval, medium for note output
+- `apply_guardrails`: recheck evidence and delegate any requested save to shared authoring after matching approval
 
 ### 9) `graph.repair_plan`
 - `internal_id`: `wf_link_repair_plan`
