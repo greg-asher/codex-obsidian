@@ -57,7 +57,7 @@ Global apply policy:
 - `chained_steps`:
   1. `obsidian-official-cli`: `create` (default path-based note creation)
   2. `obsidian-cli-workspace-and-navigation`: `unique` (optional alternative when `create_strategy=unique`)
-  3. `obsidian-official-cli`: `property:set`, `append`
+  3. `obsidian-official-cli`: include approved metadata and body in the create preview when possible. Delegate any separate changes to [controlled authoring](../../obsidian-official-cli/references/authoring-and-revision.md).
   4. `obsidian-official-cli`: `tags` or `properties` verification
   5. `obsidian-cli-workspace-and-navigation`: `open` (optional)
 - `default_output`: inline capture result with created path and applied metadata
@@ -72,8 +72,8 @@ A single `recipe=decision` without a requested capture date uses the [undated de
 - `required_inputs`: `project_name`, `target_path` for legacy kickoff. Recipe mode uses the recipe inputs.
 - `optional_inputs`: `template`, `owner`, `status`, `starter_tasks`
 - `chained_steps`:
-  1. `obsidian-official-cli`: `create` or `template:insert`
-  2. `obsidian-official-cli`: `property:set`
+  1. `obsidian-official-cli`: exact-path `create`, optionally with a verified template
+  2. `obsidian-official-cli`: preview metadata in the candidate or follow [metadata revision](../../obsidian-official-cli/references/authoring-and-revision.md#revise-metadata)
   3. `obsidian-official-cli`: `append` task scaffold
   4. `obsidian-official-cli`: `links` verification
 - `default_output`: note-ready kickoff artifact summary

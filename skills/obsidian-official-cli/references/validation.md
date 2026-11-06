@@ -151,3 +151,18 @@ All 37 tests pass locally and from a copied package path containing spaces with 
 - A missing heading returned an error with exit 0 and left the fixture bytes intact. A duplicate heading selected the first match, confirming the need to block ambiguous selectors before dispatch.
 - Installed `codex-obsidian` from the repository's local marketplace. The Codex app server listed the enabled `codex-obsidian:obsidian-official-cli` skill at its installed cache path. From an unrelated working directory, followed the installed skill and ran its cached launcher against the disposable vault. The launcher appended one test line under the unique target heading after its child section. CLI readback and a byte comparison confirmed the intended insertion and preservation of all other content.
 - Remaining live checks include an enabled older build, a delayed daily-note apply after date rollover, and the 1.15.1 async `eval` case.
+
+
+## Controlled note revision follow-up
+
+The original authoring work shipped in PR #14. The following results supersede its disabled-CLI and live-validation blockers. This follow-up used Obsidian desktop and installer 1.15.0 on macOS with the bundled sanitized launcher and two disposable vaults.
+
+- Exact-path create made the missing nested parents under the pinned vault. A deliberately dispatched collision created a numbered sibling and left the original unchanged. The production preflight blocks known collisions and reconciles unexpected siblings.
+- The Atlas Risks splice preserved frontmatter, the child section, subsequent headings, links, and literal data byte for byte outside the selected edit. A second active vault contained the same relative path. Only the pinned vault was modified. Duplicate titles and headings were discovered and left untouched. Exact snapshots also verified no-final-newline, multiple trailing newlines, leading blank lines and a UTF-8 BOM through create and overwrite.
+- A changed snapshot blocked a stale edit, and a fresh splice kept the intervening task. An ordinary append preserved apostrophes, dollars, backticks, shell-like text, Japanese and a non-BMP character. Discarding its successful response exercised the already-applied branch without replaying it. Tests still cover launcher failure and uncertain completion. The live run did not induce a still-in-flight mutation.
+- The property probe showed that a different explicit type changed the vault type map and reserialized frontmatter, including removing an unrelated comment. Omitting the type wrote a string even when the property had a number assignment. Reusing the matching explicit type preserved the type map in the probe. The exact metadata splice preserved unrelated bytes and the type map and verified the selected property with the CLI.
+- The alternate vault’s configured template resolved its title and date. Exact-path create using that template matched the resolved content and the expected frontmatter value.
+- Obsidian’s rendered DOM showed the revised warning callout, collapsed background callout, property values and the rollout link’s display label and exact block target. The heading embed was marked loaded for the correct section. The embed body and click-through navigation were not verified.
+- A refreshed local marketplace install exposed all nine skills through the Codex app server. The cached core revision and launcher entrypoints generated a diff and applied and verified a live Risks edit from an unrelated working directory.
+
+The optimistic recheck still leaves a race before write. The helper blocks CRLF and literal `\n` or `\t` sequences whose transport has not been established. This run did not verify native Windows execution or an enabled older Obsidian build.
