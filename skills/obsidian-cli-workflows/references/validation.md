@@ -28,6 +28,7 @@
    - `research.pack`
    - `graph.repair_plan`
    - `graph.orphan_reduction`
+   - `vault.audit`
    - `base.snapshot`
    - `base.intake_create`
    - `bookmark.curate`
@@ -135,3 +136,11 @@ CSV and JSON previews were checked against before-state snapshots. The CSV run p
 The decision test used the actual [Atlas sibling-folder decision in PR #17](https://github.com/greg-asher/codex-obsidian/pull/17) as source material. A manual draft identified the rule, its reason, and the intended project link. The recipe produced the dated destination, metadata and link consistently. Manual review supplied the explicit project note and kept the decision limited to folder exclusions and existing tag checks. No owner, schedule or additional decision was inferred.
 
 The refreshed Codex marketplace install ran a separate decision preview against the same live vault. It selected `inbox.capture`, rendered the exact Markdown, verified the project note and absent destination, and proposed the missing parents without creating them. A controlled CLI apply then saved that exact preview. Byte comparison, live properties, and the resolved link all matched. The rendered property widgets were not part of the verification.
+
+## Vault audit fixture and live results
+
+Use the [audit fixture](../assets/fixtures/audit/) in a disposable vault. Its Atlas work folder contains missing status, an old tag, invalid due date and hours, an unexpected status, a misspelled checklist link with an anchor, and a vendor link with two plausible aliases. Exclude the archive folder and explicit exception file. The sibling ArchiveNotes remains eligible. Personal scratch is a valid standalone note. Supply the fixture conventions explicitly.
+
+On Obsidian 1.15.0 for macOS, the preview found five metadata defects across six eligible work notes and two unresolved links. The checklist destination and heading verified. Both vendor aliases were plausible, so the link remained pending. The standalone note was a review candidate. Preview preserved all note bytes. Applying only missing status and the checklist link changed one note, preserving its display label, heading, other links, tags and unrelated YAML. A later selected tag repair verified independently. A concurrent edit blocked a second note after the first had completed. Resumption recognized the completed write and preserved the intervening text. Repeat audits omitted corrected findings and retained the pending ones.
+
+A separate read-only run over the five established Atlas dashboard work notes found the missing status on Unclassified. The explicitly empty owner in the audit fixture remained valid. No false positives or manual data corrections were needed for the expected metadata results. Candidate selection still required a reviewer, and the vendor ambiguity stayed open. Resolved-file anchor coverage and other desktop builds remain limited as described in the [audit procedure](vault-audit.md).

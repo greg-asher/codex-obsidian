@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli-workflows
-description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, capture recipes, related-note suggestions, Bases dashboards, Canvas maps, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
+description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, capture recipes, related-note suggestions, Bases dashboards, Canvas maps, vault audits, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
 ---
 
 # Obsidian CLI Workflows
@@ -33,6 +33,7 @@ Select this skill explicitly. For named calls, use a registered `workflow_id=<co
 - Explicit recipe capture → `inbox.capture`, or `project.kickoff` for a kickoff recipe. Ask for missing required inputs when the selected recipe cannot be resolved.
 - Bases table definition or dashboard → `base.dashboard`.
 - Source-linked Canvas map or process flow → `canvas.map`.
+- Scoped convention or mixed metadata/link audit → `vault.audit`. Broken-link proposals alone → `graph.repair_plan`. Orphan or dead-end review → `graph.orphan_reduction`.
 - Ask which registered ID to use for other orchestration requests. A raw command or single-note operation goes to its domain skill.
 
 Common controls:
@@ -62,6 +63,10 @@ For `base.dashboard`, use the [Bases authoring skill](../obsidian-bases-authorin
 ## Canvas map contract
 
 For `canvas.map`, use the [Canvas authoring skill](../obsidian-canvas-authoring/SKILL.md). Reuse bounded cited retrieval for sources, then preview the exact Canvas or scoped diff with evidence, layout warnings and write policy. Apply through shared controlled authoring only after matching approval. Report source validation, exact artifact verification and live readability separately.
+
+## Vault audit and repair contract
+
+For `vault.audit`, `graph.repair_plan` and `graph.orphan_reduction`, follow the [audit procedure](references/vault-audit.md). Require a pinned vault and bounded exact scope. Apply only explicit conventions, keep diagnosis read-only, and distinguish unsupported or ambiguous evidence from confirmed findings. Orphans and dead ends are review candidates. For apply, retain per-link and per-note approval, preview the exact selected changes, and use the shared revision and recovery rules. Report coverage, each selected repair's verified state, and unresolved findings.
 
 ## Core orchestration policy
 
