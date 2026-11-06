@@ -26,6 +26,7 @@ Use this matrix to pick the right skill and chain them safely.
 ## Routing examples
 
 - "Update Risks in Projects/Atlas.md in Work" -> `obsidian-official-cli` (resolve vault and section; review minimal diff and supported write mechanism)
+- “Capture these project meeting notes” after selecting the workflow skill → `inbox.capture recipe=meeting`; preview and delegate one approved create to core authoring.
 - “Capture this project decision” after selecting the workflow skill → `inbox.capture recipe=decision`; preview and delegate the approved create to core authoring.
 - "Append this to Projects/Plan.md" -> `obsidian-official-cli`
 - "Query Projects.base Roadmap in JSON and bookmark blocked items" -> `obsidian-cli-bases-and-bookmarks`

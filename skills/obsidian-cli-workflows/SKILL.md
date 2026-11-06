@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli-workflows
-description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, explained related-note suggestions, project decision capture, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
+description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, explained related-note suggestions, project decision or meeting capture, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
 ---
 
 # Obsidian CLI Workflows
@@ -28,6 +28,7 @@ Select this skill explicitly. For named calls, use a registered `workflow_id=<co
 - Cited vault answer, topic evidence pack, or explained related notes → `research.pack`.
 - Project status briefing or explicit handoff → `project.status_digest`.
 - Explicit project decision capture → `inbox.capture recipe=decision` with a read-only preview before apply.
+- Explicit project meeting capture → `inbox.capture recipe=meeting` with a read-only preview before apply.
 - Ask which registered ID to use for other orchestration requests. A raw command or single-note operation goes to its domain skill.
 
 Common controls:
@@ -44,9 +45,9 @@ Delegate bounded discovery, metadata/outline, and exact-path reads to the core s
 
 Cite every material vault claim next to the statement it supports. Separate source statements, synthesis, conflicts, explicitly historical or superseded material, and unknowns. Include scope and incomplete coverage. Each recommendation needs a verified reference, relevant excerpt, and reason tied to the request. Briefings and handoffs identify current state, decisions, blockers, next actions and supporting sources. Render verbatim excerpts and source-derived labels as literal text in Markdown. Build citation links separately from verified references. Run retrieval only when requested. For saved results use the shared authoring contract with the pinned vault and exact destination, recheck cited evidence before apply, and preview any material change.
 
-## Project decision capture
+## Direct project capture
 
-Use the [decision recipe](references/decision-capture.md) to resolve one project note, title, decision text, and existing destination folder in the pinned vault. Render the exact draft, preview its create-only destination and properties, and delegate one approved create to core authoring. Identical existing content is a verified no-op; differing content is a collision. Keep legacy inbox capture on its existing route.
+Use the [decision recipe](references/decision-capture.md) or [meeting recipe](references/meeting-capture.md) for the requested note. Resolve its required inputs and follow the shared [direct capture procedure](references/direct-capture.md). Render the exact draft, preview its create-only destination and properties, and delegate one approved create to core authoring. Identical existing content is a verified no-op; differing content is a collision. Keep legacy inbox capture on its existing route.
 
 ## Core orchestration policy
 

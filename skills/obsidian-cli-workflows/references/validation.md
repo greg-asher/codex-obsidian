@@ -121,3 +121,11 @@ Use a disposable registered vault and a new isolated folder containing an existi
 4. Change the decision while retaining the destination. Expect a collision and preserve the original bytes. If the project note or vault mapping changes before apply, stop before creating.
 
 On macOS with Obsidian CLI and installer 1.15.0, a scripted run exercised the bundled renderer, launcher, and authoring state comparison against a disposable vault. The exact create round-tripped Unicode, multiline text, and both frontmatter properties. Outgoing links reported the intended project note and ignored the literal embed. The repeat reached the already-applied state without a second write, and differing content reached the conflict state with the original bytes intact. The fixture used an isolated temporary folder. Interactive Codex skill routing and approval-turn behavior remain separate checks.
+
+## Meeting capture
+
+Use a disposable registered vault with an existing project note and meeting folder. Supply a date, one actual decision, one unresolved topic, one action with a named owner and due date, and one action without either. Check the preview for exact Markdown, the project link, the date, and only the supplied owner and due date. The unresolved topic belongs outside Decisions.
+
+Install the plugin from a local marketplace, select the workflow skill, and issue the meeting capture request. Confirm it routes to `inbox.capture recipe=meeting`, uses the bundled renderer, and sends zero create requests during preview. Approve the exact draft in the same Codex session. Verify one official CLI create, the exact UTF-8 bytes, all three properties, and the resolved project link. Replay the same approved request and check for an already-present result, no second create, and unchanged note bytes and modification time.
+
+This sequence passed with installed Codex and Obsidian CLI 1.15.0 on macOS. A fixture-only bridge forwarded scoped requests to the live CLI and permitted one create matching the approved payload. The preview kept the unresolved topic in Summary and the second action unassigned and undated. All seven capture renderer tests and 39 core tests passed.
