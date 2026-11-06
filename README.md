@@ -77,7 +77,7 @@ Select **Obsidian CLI Workflows** and ask for an audit of an exact folder or not
 
 ## Controlled Note Authoring
 
-Invoke `$obsidian-official-cli`, for example: “Update the Risks section of Projects/Atlas.md in Work using these findings.” The skill resolves both vault and exact path, reads current content, previews a minimal diff, rechecks before apply, and verifies the result. It preserves unrelated content and inspects state before retrying a timeout. Existing-file creation defaults to a collision; overwrite requires a reviewed, approved write. Workflow note outputs reuse the same contract.
+Invoke `$obsidian-official-cli`, for example: “Update the Risks section of Projects/Atlas.md in Work using these findings.” The skill resolves both vault and exact path, reads current content, previews a minimal diff, rechecks before apply, and verifies the result. It preserves unrelated content and inspects state before retrying a timeout. Existing-file creation defaults to a collision; overwrite requires a reviewed, approved write. Targeted property edits use the same reviewed splice when unrelated YAML must be preserved. Native property commands can reformat frontmatter and change vault-wide type assignments. Workflow note outputs reuse the same contract.
 
 Obsidian Desktop 1.15 adds native insertion under headings in notes and daily notes. The skill checks the installed command's help for `heading=`, resolves the heading in the approved note, and verifies the placement and line breaks. [Obsidian 1.15 release notes](https://obsidian.md/changelog/2026-11-02-desktop-v1.15.0/)
 

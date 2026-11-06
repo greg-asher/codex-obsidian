@@ -64,6 +64,8 @@ obsidian vault="My Vault" tasks verbose format=json
 obsidian vault="My Vault" property:set path="Projects/Kestrel.md" name=status value="draft" type=text
 ```
 
+Use this native example only when `status` is already assigned the text type and the approved change allows frontmatter reserialization. Follow [metadata revision](authoring-and-revision.md#revise-metadata) for exact repairs.
+
 ## Daily-note append
 
 ```bash
