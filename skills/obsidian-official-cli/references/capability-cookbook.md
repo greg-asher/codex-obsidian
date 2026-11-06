@@ -73,6 +73,16 @@ obsidian vault="My Vault" daily:append content="- [ ] Follow up with design team
 Target mode:
 - `daily-note`
 
+## Insert under a heading
+
+For an exact-path note with a unique `Next Steps` heading, follow the [heading insertion procedure](authoring-and-revision.md#insert-under-a-heading) before applying this JSON request with the CLI argument helper.
+
+```json
+{"argv":["vault=verified-id","append","path=Projects/Kestrel.md","heading=Next Steps"],"content":"- [ ] Follow up"}
+```
+
+For an existing daily note, resolve `daily:path` and use that exact path in the same request. Use `prepend` for insertion at the start of the heading's section after confirming its behavior on the installed build.
+
 ## Vault structure support before CLI move
 
 Try the CLI path first:
