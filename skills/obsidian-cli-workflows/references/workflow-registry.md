@@ -62,6 +62,8 @@ Global apply policy:
 - `risk_level`: medium
 - `apply_guardrails`: require explicit folder/title target and metadata preview before create
 
+The optional `recipe=decision` selects [project decision capture](decision-capture.md) instead of the generic idea inputs and steps above. It requires `title`, `decision`, `project_path`, and `folder`, with optional `rationale`. Resolve missing or ambiguous values before apply. The recipe uses one create-only operation with properties embedded in the exact previewed Markdown.
+
 ### 4) `project.kickoff`
 - `internal_id`: `wf_project_kickoff_note`
 - `intent`: create a project kickoff note with starter structure and metadata

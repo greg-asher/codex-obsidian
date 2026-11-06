@@ -1,6 +1,6 @@
 ---
 name: obsidian-cli-workflows
-description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, explained related-note suggestions, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
+description: Use this skill for cited answers across Obsidian notes, project briefings and handoffs, explained related-note suggestions, project decision capture, or named workflows such as tasks.rollup and daily.bootstrap. Delegates official CLI commands to their domain skills and controls preview/apply for workflow changes.
 ---
 
 # Obsidian CLI Workflows
@@ -27,11 +27,12 @@ Select this skill explicitly. For named calls, use a registered `workflow_id=<co
 
 - Cited vault answer, topic evidence pack, or explained related notes → `research.pack`.
 - Project status briefing or explicit handoff → `project.status_digest`.
+- Explicit project decision capture → `inbox.capture recipe=decision` with a read-only preview before apply.
 - Ask which registered ID to use for other orchestration requests. A raw command or single-note operation goes to its domain skill.
 
 Common controls:
 
-- `mode=preview|apply` defaults to `preview` for named calls. A plan-only request stops before evidence retrieval. A preview with inline or JSON output shows the plan. A natural-language request for an actual answer, recommendations, briefing, or handoff runs the read-only steps directly. A requested save enters preview and can read evidence to show the exact content for review. Preview never mutates the vault.
+- `mode=preview|apply` defaults to `preview` for named calls. A plan-only request stops before evidence retrieval. A preview with inline or JSON output shows the plan and any draft required by the selected recipe. A natural-language request for an actual answer, recommendations, briefing, or handoff runs the read-only steps directly. A requested save enters preview and can read evidence to show the exact content for review. Preview never mutates the vault.
 - `vault=<name-or-id>` selects the vault. Retrieval resolves and pins it even when omitted.
 - `output=inline|note|json` defaults to `inline`. Use note output only when explicitly requested.
 
@@ -42,6 +43,10 @@ Both retrieval workflows follow [the same procedure](references/cited-retrieval.
 Delegate bounded discovery, metadata/outline, and exact-path reads to the core skill. Deduplicate candidates and bodies by exact path in the pinned vault. Keep a session-only source record with verified path, heading when available, exact excerpt and reliable line range when available. Follow at most one link hop by default and within the shared limits. Never treat search ranking, graph adjacency, or dates alone as evidence of relevance, authority, or supersession.
 
 Cite every material vault claim next to the statement it supports. Separate source statements, synthesis, conflicts, explicitly historical or superseded material, and unknowns. Include scope and incomplete coverage. Each recommendation needs a verified reference, relevant excerpt, and reason tied to the request. Briefings and handoffs identify current state, decisions, blockers, next actions and supporting sources. Render verbatim excerpts and source-derived labels as literal text in Markdown. Build citation links separately from verified references. Run retrieval only when requested. For saved results use the shared authoring contract with the pinned vault and exact destination, recheck cited evidence before apply, and preview any material change.
+
+## Project decision capture
+
+Use the [decision recipe](references/decision-capture.md) to resolve one project note, title, decision text, and existing destination folder in the pinned vault. Render the exact draft, preview its create-only destination and properties, and delegate one approved create to core authoring. Identical existing content is a verified no-op; differing content is a collision. Keep legacy inbox capture on its existing route.
 
 ## Core orchestration policy
 

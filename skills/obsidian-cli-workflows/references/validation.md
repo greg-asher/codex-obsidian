@@ -104,3 +104,20 @@ The official Obsidian desktop CLI and installer both reported 1.15.0. The instal
 Replayed a handoff for the merged controlled-authoring work using scratch notes from the public [issue #10](https://github.com/greg-asher/codex-obsidian/issues/10), [PR #14](https://github.com/greg-asher/codex-obsidian/pull/14), and its core validation reference. The PR's validation section supported the current state and blocker. Its implementation and remaining-validation sections supported the reviewed overwrite decision, race window, and the next action: enable/register the CLI in a disposable setup, record installed help and vault identity, and start with exact-path read/create/append/property round trips. Native Windows behavior, lossless overwrite, and Obsidian rendering remain separate checks.
 
 The first draft grouped live validation into one action. The detailed core validation note exceeded the 12 KiB call cap, so the handoff disclosed that gap and linked to the checklist through the PR reference. Manual review split basic transport verification from later revision/rendering tests and identified the CLI setup dependency. The sources did not establish an owner or date. The corrected handoff gives a reader a concrete first test and a checklist to continue from. It still needs a live project run and feedback from someone resuming the work.
+
+## Decision capture
+
+Run the renderer checks from the plugin root:
+
+```bash
+python3 -m unittest discover -s skills/obsidian-cli-workflows/tests
+```
+
+Use a disposable registered vault and a new isolated folder containing an existing project note. Run the decision recipe with a non-ASCII title, multiline decision text containing an embed, and a rationale. Check these outcomes:
+
+1. Preview shows the exact Markdown, destination, properties, and intended project link. The vault has no new note or directory.
+2. Apply dispatches one exact-path create without overwrite. Read the note back, compare its UTF-8 bytes to the approved draft, and inspect the properties and outgoing links.
+3. Repeating the request at the same destination produces identical bytes. Compare with the current file and report already present without a new create.
+4. Change the decision while retaining the destination. Expect a collision and preserve the original bytes. If the project note or vault mapping changes before apply, stop before creating.
+
+On macOS with Obsidian CLI and installer 1.15.0, a scripted run exercised the bundled renderer, launcher, and authoring state comparison against a disposable vault. The exact create round-tripped Unicode, multiline text, and both frontmatter properties. Outgoing links reported the intended project note and ignored the literal embed. The repeat reached the already-applied state without a second write, and differing content reached the conflict state with the original bytes intact. The fixture used an isolated temporary folder. Interactive Codex skill routing and approval-turn behavior remain separate checks.

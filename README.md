@@ -53,6 +53,10 @@ Select **Obsidian CLI Workflows** in Codex (installed skill ID `codex-obsidian:o
 
 Results are inline and read-only by default. Search, tag checks, and one-hop links provide bounded coverage. Each material claim is tied to a note path and heading or line when available. Save previews show the exact destination, content and collision policy before apply. Bounded retrieval uses the bundled launcher with Python 3.9+ or an equivalent bounded runner. See the [retrieval playbook](skills/obsidian-cli-workflows/references/cited-retrieval.md) for inputs and limits.
 
+## Capture a Project Decision
+
+Select **Obsidian CLI Workflows** and ask “Preview capturing the decision ‘Use scoped tokens’ for Projects/Atlas.md in Work. Put it in Decisions with the rationale ‘Reduce exposure if a token leaks.’” The decision recipe previews the exact note and project link. After approval, it creates the note once and verifies the result. An identical existing note counts as already present. See the [decision recipe](skills/obsidian-cli-workflows/references/decision-capture.md) for required inputs and the Python 3.9+ renderer.
+
 ## Controlled Note Authoring
 
 Invoke `$obsidian-official-cli`, for example: “Update the Risks section of Projects/Atlas.md in Work using these findings.” The skill resolves both vault and exact path, reads current content, previews a minimal diff, rechecks before apply, and verifies the result. It preserves unrelated content and inspects state before retrying a timeout. Existing-file creation defaults to a collision; overwrite requires a reviewed, approved write. Workflow note outputs reuse the same contract.
@@ -63,7 +67,7 @@ Section revision has no assumed native patch command. It uses a reviewed exact-t
 
 Prerequisites: official Obsidian desktop installer 1.12.7+ with CLI enabled/registered and app available. Optional bundled helpers require Python 3.9+ (standard library only). They handle JSON arguments and exact-text previews; they do not install services, configure vaults, or write note content directly. Resolve helper paths from the installed skill, including cached copies. See [authoring/revision details](skills/obsidian-official-cli/references/authoring-and-revision.md) and [validation evidence/remaining live checks](skills/obsidian-official-cli/references/validation.md).
 
-All seven skills retain explicit invocation. Cited retrieval accepts plain language after selecting the workflow skill. Other named orchestration uses `workflow_id=`.
+All seven skills retain explicit invocation. Cited retrieval and project decision capture accept plain language after selecting the workflow skill. Other named orchestration uses `workflow_id=`.
 
 ## What This Plugin Does Not Do
 

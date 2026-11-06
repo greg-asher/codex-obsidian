@@ -13,7 +13,7 @@
 - community/non-official Obsidian CLI tools
 - `obsidian://` launcher automation
 - Headless Sync automation
-- implicit skill invocation; plain-language cited retrieval requires explicitly selecting the workflow skill
+- implicit skill invocation; plain-language cited retrieval and decision capture require explicitly selecting the workflow skill
 - semantic search, background capture, stored evidence, or cross-vault synthesis
 
 ## Operational limits
