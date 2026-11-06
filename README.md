@@ -14,6 +14,10 @@ It currently ships nine focused skills:
 - `obsidian-cli-workspace-and-navigation` for vault/workspace/tab/navigation and utility workflows.
 - `obsidian-cli-workflows` for cited vault answers, explained related notes, project handoffs, and named workflows with preview/apply controls.
 
+## Start with Project Atlas
+
+Install the plugin, open a copy of the fictional Atlas vault, and try a cited project review. The walkthrough takes you through an approved note edit and shows how to verify it in Bases. [Project Atlas walkthrough](docs/project-atlas-walkthrough.md)
+
 ## What This Plugin Does
 
 - Reads and inspects local Obsidian vault content through the official desktop CLI.

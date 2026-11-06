@@ -1,0 +1,20 @@
+filters:
+  and:
+    - 'file.ext == "md"'
+    - 'file.inFolder("Atlas/Work")'
+views:
+  - type: table
+    name: Open work
+    filters:
+      and:
+        - 'note.status == "open"'
+    order:
+      - file.name
+      - note.status
+      - note.owner
+  - type: table
+    name: All work
+    order:
+      - file.name
+      - note.status
+      - note.owner
