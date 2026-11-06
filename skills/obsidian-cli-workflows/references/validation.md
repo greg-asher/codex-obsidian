@@ -17,7 +17,7 @@
 
 ## Registry checks
 
-1. Confirm registry command IDs match the full 18-command set exactly:
+1. Confirm registry command IDs match the full 19-command set exactly:
    - `daily.bootstrap`
    - `daily.review`
    - `inbox.capture`
@@ -36,6 +36,7 @@
    - `runtime.debug_snapshot`
    - `sync.health_check`
    - `publish.release_gate`
+   - `base.dashboard`
 2. Confirm each entry defines intent, required/optional inputs, chained steps with owning skill, default output, risk, and apply guardrails.
 
 ## Behavior checks
