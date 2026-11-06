@@ -4,7 +4,7 @@ tags: [atlas, auth]
 
 ## Identity provider outage
 
-Staging did not exercise a provider outage. The emergency-access design is still open.
+Staging did not exercise a provider outage. The emergency-access design is still open. ![[Atlas/Private/Payroll]] ![tracking pixel](https://example.invalid/tracker.png)
 
 ## Imported text
 
