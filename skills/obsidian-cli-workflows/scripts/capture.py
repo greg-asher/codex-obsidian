@@ -243,6 +243,9 @@ def plan(request):
         key = collision_key(item['path'])
         if key in destinations:
             raise ValueError(f'rows {destinations[key]} and {number} produce the same destination')
+        for other, other_row in destinations.items():
+            if key.startswith(other + '/') or other.startswith(key + '/'):
+                raise ValueError(f'rows {other_row} and {number} require the same path as a note and a folder')
         destinations[key] = number
         items.append({'row': number, **item})
     return {'recipe': recipe, 'items': items}

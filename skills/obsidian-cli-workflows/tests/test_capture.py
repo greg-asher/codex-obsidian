@@ -103,6 +103,21 @@ class CaptureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'duplicate field'):
             plan(request)
 
+    def test_batch_rejects_note_and_folder_collision_in_either_order(self):
+        rows = [{'title': 'Café', 'body': 'First', 'folder': 'Inbox'},
+                {'title': 'Child', 'body': 'Second', 'folder': f'inbox/{DATE} CAFE\u0301.md'}]
+        request = {'recipe': 'idea', 'captured': DATE, 'batch': {
+            'format': 'json',
+            'mapping': {'title': 'title', 'body': 'body', 'folder': 'folder'},
+        }}
+        for ordered in (rows, rows[::-1]):
+            request['batch']['data'] = json.dumps(ordered)
+            with self.subTest(rows=ordered), self.assertRaisesRegex(ValueError, 'note and a folder'):
+                plan(request)
+        rows[1]['folder'] += '-archive'
+        request['batch']['data'] = json.dumps(rows)
+        self.assertEqual(len(plan(request)['items']), 2)
+
     def test_rejects_traversal_missing_fields_and_transport_ambiguity(self):
         request = {'recipe': 'idea', 'captured': DATE}
         for fields in ({'folder': '../Private'}, {'folder': 'C:/Windows'}, {'folder': 'Inbox/AUX'},
