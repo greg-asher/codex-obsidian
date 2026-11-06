@@ -20,6 +20,7 @@ Use this matrix to pick the right skill and chain them safely.
 - `obsidian-cli-workflows`:
   - one-command orchestration by named workflow ID with preview/apply controls
   - after explicit skill selection, cited questions and related notes use `research.pack`; briefings and handoffs use `project.status_digest`
+  - explicit meeting, decision, idea, kickoff, or source recipes use shared capture preparation and core controlled authoring
   - vault discovery delegates to workspace/navigation; bounded note evidence and optional saves delegate to the core skill
   - owns workflow IDs only; delegates direct command execution to the six domain skills
 
