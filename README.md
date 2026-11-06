@@ -71,6 +71,10 @@ Select **Obsidian Bases Authoring** and ask for a table over an explicit folder,
 
 Select **Obsidian Canvas Authoring** or run `workflow_id=canvas.map mode=preview` through the workflow skill. Build a research map, project overview, or linear process flow with verified file cards and labeled relationships. Preview the exact artifact or scoped diff, then verify the saved bytes and inspect the rendered Canvas. The renderer uses Python 3.9+ and the standard library. [Canvas authoring and examples](skills/obsidian-canvas-authoring/references/canvas-maps.md)
 
+## Vault Audits and Repairs
+
+Select **Obsidian CLI Workflows** and ask for an audit of an exact folder or note list. Provide any property or tag conventions and exclusions. Use `workflow_id=vault.audit mode=preview` to see findings and proposed fixes. The workflow can apply selected metadata and wikilink repairs through reviewed note revisions. [Audit configuration and repair procedure](skills/obsidian-cli-workflows/references/vault-audit.md)
+
 ## Controlled Note Authoring
 
 Invoke `$obsidian-official-cli`, for example: “Update the Risks section of Projects/Atlas.md in Work using these findings.” The skill resolves both vault and exact path, reads current content, previews a minimal diff, rechecks before apply, and verifies the result. It preserves unrelated content and inspects state before retrying a timeout. Existing-file creation defaults to a collision; overwrite requires a reviewed, approved write. Workflow note outputs reuse the same contract.
@@ -81,7 +85,7 @@ Section revision has no assumed native patch command. It uses a reviewed exact-t
 
 Prerequisites: official Obsidian desktop installer 1.12.7+ with CLI enabled/registered and app available. Optional bundled helpers require Python 3.9+ (standard library only). They handle JSON arguments and exact-text previews; they do not install services, configure vaults, or write note content directly. Resolve helper paths from the installed skill, including cached copies. See [authoring/revision details](skills/obsidian-official-cli/references/authoring-and-revision.md) and [validation evidence/remaining live checks](skills/obsidian-official-cli/references/validation.md).
 
-All nine skills retain explicit invocation. Cited retrieval, recipe capture, Bases dashboards, and Canvas maps accept plain language after selecting the workflow skill. Other named orchestration uses `workflow_id=`.
+All nine skills retain explicit invocation. Cited retrieval, recipe capture, Bases dashboards, Canvas maps, and vault audits accept plain language after selecting the workflow skill. Other named orchestration uses `workflow_id=`.
 
 ## What This Plugin Does Not Do
 

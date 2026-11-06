@@ -112,3 +112,5 @@ Use this matrix to pick the right skill and chain them safely.
 - Keep runtime admin and customization operations in `obsidian-cli-runtime-admin`.
 - Keep vault/workspace/tab/navigation and utility operations in `obsidian-cli-workspace-and-navigation`.
 - Keep one-command workflow IDs and preview/apply orchestration in `obsidian-cli-workflows`.
+
+For a scoped convention audit, mixed metadata and link repairs, or explained orphan review, select [Obsidian CLI Workflows](../../obsidian-cli-workflows/SKILL.md). Core still owns the underlying property, link and note commands.

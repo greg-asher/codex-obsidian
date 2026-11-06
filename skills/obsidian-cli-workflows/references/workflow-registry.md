@@ -127,28 +127,23 @@ A single `recipe=decision` without a requested capture date uses the [undated de
 
 ### 9) `graph.repair_plan`
 - `internal_id`: `wf_link_repair_plan`
-- `intent`: produce unresolved-link repair plan with candidate mappings
-- `required_inputs`: none
-- `optional_inputs`: `scope_path`, `apply_mode=plan_only|guided_apply`
-- `chained_steps`:
-  1. `obsidian-official-cli`: `unresolved verbose format=json`
-  2. `obsidian-official-cli`: `search` candidate targets
-- `default_output`: repair plan with confidence-ranked suggestions
-- `risk_level`: low
-- `apply_guardrails`: any mutation path requires per-link confirmation and exact path matching
+- `intent`: diagnose unresolved links in an exact scope and preview selected repairs
+- `required_inputs`: exact folder or note paths in a pinned vault
+- `optional_inputs`: `scope_path` (exact folder or note), exclusions, budgets, `apply_mode=plan_only|guided_apply`
+- `chained_steps`: scope through workspace/navigation, then core `unresolved`, `links`, bounded candidate verification, and approved exact revision
+- `default_output`: structured findings, exact source occurrences, verified candidates and ambiguity
+- `risk_level`: low for diagnosis, medium for apply
+- `apply_guardrails`: follow [vault audits](vault-audit.md) and require matching per-link approval
 
 ### 10) `graph.orphan_reduction`
 - `internal_id`: `wf_orphan_reduction`
-- `intent`: reduce orphan/dead-end notes with prioritized actions
-- `required_inputs`: none
-- `optional_inputs`: `scope_path`, `suggest_backlink_seed`, `apply_backlink_seed`
-- `chained_steps`:
-  1. `obsidian-official-cli`: `orphans`, `deadends`
-  2. `obsidian-official-cli`: `tags`, `properties`
-  3. `obsidian-official-cli`: `append` (optional backlink seed)
-- `default_output`: actionable orphan reduction report
-- `risk_level`: low (preview/report), medium (apply backlink seeds)
-- `apply_guardrails`: require explicit per-note apply list before any append actions
+- `intent`: review orphan/dead-end candidates with context and optional link suggestions
+- `required_inputs`: exact folder or note paths in a pinned vault
+- `optional_inputs`: `scope_path` (exact folder or note), exclusions, budgets, `suggest_backlink_seed`, `apply_backlink_seed`
+- `chained_steps`: intersect core `orphans` and `deadends` with scope, verify exact-path context, optionally preview an explicit append
+- `default_output`: explained review candidates and exact optional link proposals
+- `risk_level`: low for review, medium for approved append
+- `apply_guardrails`: follow [vault audits](vault-audit.md), require explicit per-note apply list and exact link approval, verify occurrence counts
 
 ### 11) `base.snapshot`
 - `internal_id`: `wf_base_view_snapshot`
@@ -284,3 +279,13 @@ A single `recipe=decision` without a requested capture date uses the [undated de
 - `default_output`: source and relationship evidence, layout warnings, candidate or diff, write and visual status
 - `risk_level`: medium
 - `apply_guardrails`: follow the [Canvas authoring contract](../../obsidian-canvas-authoring/SKILL.md), preserve unrelated records and source notes, and never silently overwrite
+
+### 21) `vault.audit`
+- `internal_id`: `wf_vault_audit`
+- `intent`: audit explicit metadata conventions and unresolved links, with selected verified corrections
+- `required_inputs`: exact folder or note paths in a pinned vault
+- `optional_inputs`: exclusions, note/read budgets, conventions, orphan/dead-end review
+- `chained_steps`: resolve scope, compare core CLI evidence with conventions, preview exact selected repairs, delegate approved writes and verify findings
+- `default_output`: coverage, structured findings, exact repair diffs, remaining issues and per-item outcomes
+- `risk_level`: low for diagnosis, medium for apply
+- `apply_guardrails`: follow [vault audits](vault-audit.md), honor per-link/per-note approval and stop on uncertain dispatch
