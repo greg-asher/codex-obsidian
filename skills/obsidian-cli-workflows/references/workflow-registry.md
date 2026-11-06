@@ -6,6 +6,8 @@ This registry is decision-complete for `obsidian-cli-workflows`.
 
 All 18 entries below retain their IDs and domain ownership. Any capture, synthesis/report save, task-log insertion, property repair, or optional `output=note` delegates to the core [authoring/revision contract](../../obsidian-official-cli/SKILL.md) and [procedure](../../obsidian-official-cli/references/authoring-and-revision.md). A destination path alone is insufficient: resolve and retain vault identity/root too. Preview exact content/diff and collision policy; recheck before apply, verify after, and reconcile uncertain completion before retry. Existing-file default is block unless an approved append/revision/replacement policy applies. A note save promotes a read-only workflow to medium risk and requires matching apply authorization. Preview never writes. Matching existing approval is sufficient.
 
+An explicitly selected capture recipe for saving a briefing or a daily workflow draft is a separately previewed create-only note. See [capture recipes](capture-recipes.md).
+
 ## Canonical interface
 
 - required: `workflow_id=<command-id>`
@@ -49,8 +51,8 @@ Global apply policy:
 
 ### 3) `inbox.capture`
 - `internal_id`: `wf_inbox_capture`
-- `intent`: capture an idea into inbox conventions with metadata
-- `required_inputs`: `title` or `content`
+- `intent`: capture an idea into inbox conventions with metadata, or use an explicit [capture recipe](capture-recipes.md) for direct, web, or batch inputs
+- `required_inputs`: `title` or `content` for legacy capture. With `recipe=`, use the matching recipe inputs and preview/apply procedure.
 - `optional_inputs`: `folder`, `tags`, `properties`, `open_new_tab`, `create_strategy=create|unique`
 - `chained_steps`:
   1. `obsidian-official-cli`: `create` (default path-based note creation)
@@ -62,12 +64,12 @@ Global apply policy:
 - `risk_level`: medium
 - `apply_guardrails`: require explicit folder/title target and metadata preview before create
 
-The optional `recipe=decision` selects [project decision capture](decision-capture.md) instead of the generic idea inputs and steps above. It requires `title`, `decision`, `project_path`, and `folder`, with optional `rationale`. Resolve missing or ambiguous values before apply. The recipe uses one create-only operation with properties embedded in the exact previewed Markdown.
+A single `recipe=decision` without a requested capture date uses the [undated decision contract](decision-capture.md). Use the [dated recipe contract](capture-recipes.md) for an explicitly dated decision or a batch. Both use one create-only operation per item with properties embedded in the exact preview.
 
 ### 4) `project.kickoff`
 - `internal_id`: `wf_project_kickoff_note`
-- `intent`: create a project kickoff note with starter structure and metadata
-- `required_inputs`: `project_name`, `target_path`
+- `intent`: create a project kickoff note with starter structure and metadata. Explicit `recipe=kickoff` uses [capture recipes](capture-recipes.md) instead of the legacy steps below.
+- `required_inputs`: `project_name`, `target_path` for legacy kickoff. Recipe mode uses the recipe inputs.
 - `optional_inputs`: `template`, `owner`, `status`, `starter_tasks`
 - `chained_steps`:
   1. `obsidian-official-cli`: `create` or `template:insert`
